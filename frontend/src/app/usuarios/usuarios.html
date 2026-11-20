@@ -37,11 +37,21 @@
 
     <div class="mb-6">
       <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y MATERIALES</span>
-      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+      <a routerLink="/compras" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
         <span class="text-lg">📦</span> <span *ngIf="sidebarAbierta">Compras Generales</span>
       </a>
-      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
-        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Bodega de Madera</span>
+      <a routerLink="/almacen" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Almacén e Inventarios</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">COMERCIO DIGITAL</span>
+      <a routerLink="/ecommerce" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🛒</span> <span *ngIf="sidebarAbierta">Tienda en Línea</span>
       </a>
     </div>
 

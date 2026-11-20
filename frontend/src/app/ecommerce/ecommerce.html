@@ -1,0 +1,441 @@
+<div class="min-h-screen bg-[#FAF8F5] font-sans text-stone-800">
+
+  <!-- HEADER PWA -->
+  <header class="sticky top-0 z-30 bg-[#FAF8F5]/95 backdrop-blur border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="h-20 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 shrink-0">
+          <img src="/logo_atelier.png" alt="Atelier" class="w-10 h-10 object-contain">
+          <div>
+            <h1 class="text-[#6E121E] font-serif text-2xl leading-none">Atelier</h1>
+            <span class="text-[9px] tracking-[0.22em] text-stone-500">MADERAFINA · MUEBLES A MEDIDA</span>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex items-center bg-white border border-stone-200 rounded-full p-1 shadow-sm">
+          <button (click)="irACatalogo()"
+                  [ngClass]="vista === 'catalogo' ? 'bg-[#6E121E] text-white' : 'text-stone-600 hover:text-[#6E121E]'"
+                  class="px-5 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">
+            Catálogo
+          </button>
+          <button (click)="irAPedidos()"
+                  [ngClass]="vista === 'pedidos' ? 'bg-[#6E121E] text-white' : 'text-stone-600 hover:text-[#6E121E]'"
+                  class="px-5 py-2 rounded-full text-xs font-semibold transition-colors flex items-center gap-2 cursor-pointer">
+            Mis Pedidos
+            <span class="min-w-5 h-5 px-1.5 rounded-full text-[10px] flex items-center justify-center"
+                  [ngClass]="vista === 'pedidos' ? 'bg-white/20 text-white' : 'bg-stone-100 text-stone-600'">{{ pedidos.length }}</span>
+          </button>
+        </nav>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a *ngIf="usuario" routerLink="/dashboard" class="hidden lg:inline-flex text-xs text-stone-500 hover:text-[#6E121E] font-medium">
+            ← Volver al ERP
+          </a>
+          <button (click)="abrirCarrito()" class="relative flex items-center gap-2 px-4 py-2.5 bg-white border border-stone-200 rounded-full shadow-sm hover:border-[#6E121E] transition-colors cursor-pointer">
+            <span class="text-lg">🛒</span>
+            <span class="hidden sm:inline text-xs font-semibold text-stone-700">Carrito</span>
+            <span *ngIf="carritoCantidad > 0" class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-[#6E121E] text-white text-[10px] flex items-center justify-center font-bold">{{ carritoCantidad }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NAV MÓVIL -->
+      <div class="md:hidden flex gap-2 pb-3">
+        <button (click)="irACatalogo()"
+                [ngClass]="vista === 'catalogo' ? 'bg-[#6E121E] text-white' : 'bg-white text-stone-600 border border-stone-200'"
+                class="flex-1 py-2 rounded-lg text-xs font-semibold">Catálogo</button>
+        <button (click)="irAPedidos()"
+                [ngClass]="vista === 'pedidos' ? 'bg-[#6E121E] text-white' : 'bg-white text-stone-600 border border-stone-200'"
+                class="flex-1 py-2 rounded-lg text-xs font-semibold">Mis Pedidos ({{ pedidos.length }})</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-5 sm:px-8 py-8">
+
+    <!-- AVISOS -->
+    <div *ngIf="error" class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex justify-between items-center">
+      <span>{{ error }}</span>
+      <button (click)="error = ''" class="text-red-500">✕</button>
+    </div>
+    <div *ngIf="mensaje" class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 flex justify-between items-center">
+      <span>{{ mensaje }}</span>
+      <button (click)="mensaje = ''" class="text-emerald-500">✕</button>
+    </div>
+
+    <!-- ================= CATÁLOGO ================= -->
+    <div *ngIf="vista === 'catalogo'">
+
+      <section class="grid lg:grid-cols-5 gap-6 mb-9">
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-stone-200 shadow-sm p-8 sm:p-10 flex flex-col justify-center relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 w-52 h-52 rounded-full bg-[#f7ecee]"></div>
+          <div class="absolute right-10 bottom-4 text-[110px] opacity-10 select-none">🪵</div>
+          <span class="relative uppercase tracking-[0.24em] text-[10px] text-[#b9884f]">COLECCIÓN ATELIER · LEÓN, GTO.</span>
+          <h2 class="relative text-4xl sm:text-5xl font-serif text-[#6E121E] leading-tight mt-3">
+            Muebles que nacen<br>del <span class="italic font-light">taller</span>.
+          </h2>
+          <p class="relative text-sm text-stone-500 mt-4 max-w-lg">
+            Piezas de madera sólida, melamina y resina epóxica fabricadas a medida. Compra en línea y sigue cada fase de producción de tu mueble en tiempo real.
+          </p>
+          <div class="relative flex flex-wrap items-center gap-3 mt-6">
+            <a href="#catalogo" class="px-5 py-2.5 bg-[#6E121E] text-white text-sm rounded-lg hover:bg-[#5a0e18] shadow-sm">Explorar catálogo</a>
+            <button (click)="irAPedidos()" class="px-5 py-2.5 bg-white border border-stone-200 text-stone-700 text-sm rounded-lg hover:bg-stone-50">Rastrear mi pedido</button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 grid grid-cols-2 gap-4">
+          <div class="bg-[#6E121E] text-white rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+            <span class="text-[10px] tracking-widest opacity-70">HECHO A MANO</span>
+            <div>
+              <strong class="block text-3xl font-serif">100%</strong>
+              <span class="text-[11px] opacity-80">Madera seleccionada y acabados finos</span>
+            </div>
+          </div>
+          <div class="bg-white border border-stone-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+            <span class="text-[10px] tracking-widest text-stone-400">TIEMPO PROMEDIO</span>
+            <div>
+              <strong class="block text-3xl font-serif text-[#6E121E]">6–18h</strong>
+              <span class="text-[11px] text-stone-500">Producción artesanal por pieza</span>
+            </div>
+          </div>
+          <div class="col-span-2 bg-[#fbf3e9] border border-[#eadcc8] rounded-2xl p-5 flex items-center justify-between gap-4 shadow-sm">
+            <div>
+              <span class="text-[10px] tracking-widest text-[#9a7040]">SEGUIMIENTO KANBAN</span>
+              <strong class="block text-sm text-stone-800 mt-1">Corte → Barnizado → Calidad → Entrega</strong>
+              <span class="text-[11px] text-stone-500">Consulta el avance real de tu pedido.</span>
+            </div>
+            <span class="text-3xl">📐</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="catalogo">
+        <div class="flex flex-wrap justify-between items-end gap-4 mb-4">
+          <div>
+            <span class="uppercase tracking-[0.2em] text-[10px] text-stone-500">CATÁLOGO EN LÍNEA</span>
+            <h3 class="text-2xl font-serif text-[#6E121E] mt-1">Piezas disponibles</h3>
+          </div>
+          <div class="relative w-full sm:w-72">
+            <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
+            <input type="text" [(ngModel)]="busqueda" placeholder="Buscar mueble o categoría..."
+                   class="w-full pl-9 pr-4 py-2.5 bg-white border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#6E121E] shadow-sm">
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button *ngFor="let categoria of categorias" (click)="cambiarCategoria(categoria)"
+                  [ngClass]="categoriaActual === categoria ? 'bg-[#6E121E] text-white border-[#6E121E]' : 'bg-white text-stone-600 border-stone-200 hover:border-[#6E121E] hover:text-[#6E121E]'"
+                  class="px-4 py-1.5 text-xs rounded-full border transition-colors cursor-pointer">
+            {{ categoria }}
+          </button>
+        </div>
+
+        <div *ngIf="cargando" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div *ngFor="let n of [1,2,3]" class="bg-white rounded-2xl border border-stone-200 h-80 animate-pulse"></div>
+        </div>
+
+        <div *ngIf="!cargando" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <article *ngFor="let producto of productosFiltrados" class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden group hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col">
+            <div class="relative h-48 bg-gradient-to-br from-[#f7ecee] via-[#fbf8f5] to-[#efe6dc] overflow-hidden">
+              <img *ngIf="producto.imagen_url" [src]="producto.imagen_url" [alt]="producto.nombre"
+                   (error)="imagenError(producto)" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div *ngIf="!producto.imagen_url" class="w-full h-full flex flex-col items-center justify-center text-[#6E121E]/60">
+                <span class="text-5xl">🪑</span>
+                <span class="text-[10px] tracking-widest mt-2">ATELIER · {{ producto.categoria }}</span>
+              </div>
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-[10px] font-semibold text-[#6E121E] border border-white shadow-sm">
+                {{ producto.categoria }}
+              </span>
+              <span *ngIf="producto.requiere_instalacion" class="absolute top-3 right-3 px-2 py-1 rounded-full bg-[#6E121E] text-white text-[9px] font-semibold">Con instalación</span>
+            </div>
+
+            <div class="p-5 flex-1 flex flex-col">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="text-base font-semibold text-stone-800 leading-snug">{{ producto.nombre }}</h4>
+                <div class="text-right shrink-0">
+                  <div class="flex text-[11px]">
+                    <span *ngFor="let e of estrellas" [ngClass]="e <= producto.calificacion_promedio ? 'text-amber-500' : 'text-stone-300'">★</span>
+                  </div>
+                  <span class="text-[10px] text-stone-400">
+                    {{ producto.total_resenas > 0 ? (producto.calificacion_promedio | number:'1.1-1') + ' (' + producto.total_resenas + ')' : 'Sin reseñas' }}
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-xs text-stone-500 mt-2 leading-relaxed line-clamp-2">{{ producto.descripcion }}</p>
+
+              <div class="flex items-center gap-3 mt-3 text-[10px] text-stone-400">
+                <span>⏱ {{ producto.tiempo_estimado_horas }} h de taller</span>
+                <span>·</span>
+                <span>Hecho a medida</span>
+              </div>
+
+              <div class="flex items-end justify-between gap-3 mt-5 pt-4 border-t border-stone-100">
+                <div>
+                  <span class="block text-[9px] tracking-widest text-stone-400">PRECIO MXN</span>
+                  <strong class="text-xl text-[#6E121E]">{{ producto.precio_venta | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+                </div>
+                <button (click)="agregarAlCarrito(producto)" class="px-4 py-2.5 bg-[#6E121E] text-white text-xs font-semibold rounded-lg hover:bg-[#5a0e18] flex items-center gap-1.5 shadow-sm cursor-pointer">
+                  <span>＋</span> Agregar
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div *ngIf="!cargando && productosFiltrados.length === 0" class="bg-white border border-stone-200 rounded-2xl p-12 text-center">
+          <span class="text-4xl">🪵</span>
+          <p class="text-sm text-stone-500 mt-3">No encontramos piezas con esa búsqueda.</p>
+          <button (click)="busqueda = ''; categoriaActual = 'TODAS'" class="mt-3 text-xs text-[#6E121E] font-semibold hover:underline">Limpiar filtros</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= MIS PEDIDOS ================= -->
+    <div *ngIf="vista === 'pedidos'">
+      <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+        <div>
+          <span class="uppercase tracking-[0.2em] text-[10px] text-stone-500">ÁREA DE CLIENTE · RASTREO EN VIVO</span>
+          <h2 class="text-3xl font-serif text-[#6E121E] mt-1">Mis Pedidos</h2>
+          <p class="text-sm text-stone-500 mt-1">
+            {{ cliente?.nombre || 'Cliente Atelier' }} · {{ pedidos.length }} pedido(s) registrados.
+            <span *ngIf="usandoClienteDemo" class="text-amber-600">Modo demostración con la cuenta cliente@gmail.com.</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-[11px] font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Actualización automática
+          </span>
+          <button (click)="cargarPedidos()" class="px-4 py-2 bg-white border border-stone-200 rounded-lg text-xs text-stone-600 hover:bg-stone-50">↻ Actualizar</button>
+        </div>
+      </div>
+
+      <div *ngIf="cargandoPedidos" class="bg-white border border-stone-200 rounded-2xl p-12 text-center text-sm text-stone-400">
+        Consultando las fases de producción...
+      </div>
+
+      <div *ngIf="!cargandoPedidos && pedidos.length === 0" class="bg-white border border-stone-200 rounded-2xl p-14 text-center">
+        <span class="text-5xl">📦</span>
+        <h3 class="text-xl font-serif text-[#6E121E] mt-4">Aún no tienes pedidos</h3>
+        <p class="text-sm text-stone-500 mt-2">Explora el catálogo y aparta tu primera pieza hecha en el taller.</p>
+        <button (click)="irACatalogo()" class="mt-5 px-5 py-2.5 bg-[#6E121E] text-white text-sm rounded-lg hover:bg-[#5a0e18]">Ver catálogo</button>
+      </div>
+
+      <div class="space-y-6">
+        <article *ngFor="let pedido of pedidos" class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+          <!-- Cabecera del pedido -->
+          <div class="p-5 border-b border-stone-100 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-[#f7ecee] text-[#6E121E] flex items-center justify-center text-lg">🧾</div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <strong class="text-base text-stone-800">Pedido #{{ pedido.id_pedido }}</strong>
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold border"
+                        [ngClass]="pedido.estado_pedido === 'Pagado' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-stone-100 text-stone-600 border-stone-200'">
+                    {{ pedido.estado_pedido }}
+                  </span>
+                </div>
+                <span class="text-[11px] text-stone-400">{{ pedido.fecha_pedido }} · {{ pedido.total_articulos }} artículo(s)</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="block text-[9px] tracking-widest text-stone-400">TOTAL PAGADO</span>
+              <strong class="text-lg text-[#6E121E]">{{ pedido.total | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+            </div>
+          </div>
+
+          <!-- Progreso general -->
+          <div class="px-5 py-5 bg-[#fbf8f5] border-b border-stone-100">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-[10px] tracking-widest text-stone-400">FASE GENERAL DEL PEDIDO</span>
+              <span class="text-[11px] font-semibold text-[#6E121E]">{{ pedido.fase_general }}</span>
+            </div>
+            <div class="flex items-center">
+              <ng-container *ngFor="let fase of fases; let i = index">
+                <div class="flex flex-col items-center min-w-16">
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] text-white font-bold"
+                        [ngClass]="colorFase(pedido.fase_general_indice, i)">{{ i < pedido.fase_general_indice ? '✓' : i + 1 }}</span>
+                  <span class="text-[9px] mt-1.5 text-center hidden sm:block"
+                        [ngClass]="i <= pedido.fase_general_indice ? 'text-stone-700 font-semibold' : 'text-stone-400'">{{ fase }}</span>
+                </div>
+                <div *ngIf="i < fases.length - 1" class="flex-1 h-0.5 mx-1 rounded"
+                     [ngClass]="i < pedido.fase_general_indice ? 'bg-[#6E121E]' : 'bg-stone-200'"></div>
+              </ng-container>
+            </div>
+            <div class="mt-2 h-1.5 rounded-full bg-stone-200 overflow-hidden sm:hidden">
+              <div class="h-full bg-[#6E121E] rounded-full" [style.width.%]="pedido.progreso_general"></div>
+            </div>
+          </div>
+
+          <!-- Artículos -->
+          <div class="divide-y divide-stone-100">
+            <div *ngFor="let item of pedido.items" class="p-5">
+              <div class="flex flex-wrap md:flex-nowrap gap-4">
+                <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-[#f7ecee] to-[#efe6dc] flex items-center justify-center shrink-0 overflow-hidden">
+                  <img *ngIf="item.imagen_url" [src]="item.imagen_url" [alt]="item.producto"
+                       (error)="item.imagen_url = null" class="w-full h-full object-cover">
+                  <span *ngIf="!item.imagen_url" class="text-3xl">🪑</span>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap justify-between gap-2">
+                    <div>
+                      <strong class="text-sm text-stone-800">{{ item.producto }}</strong>
+                      <span class="block text-[11px] text-stone-400">{{ item.categoria }} · {{ item.cantidad }} pieza(s) · {{ item.horas_invertidas }} h invertidas</span>
+                    </div>
+                    <span class="text-sm font-semibold text-stone-800">{{ item.subtotal | currency:'MXN':'symbol-narrow':'1.0-0' }}</span>
+                  </div>
+
+                  <!-- Progreso por pieza -->
+                  <div class="mt-3 flex items-center gap-3">
+                    <div class="flex-1 h-2 rounded-full bg-stone-100 overflow-hidden">
+                      <div class="h-full rounded-full transition-all"
+                           [ngClass]="item.fase_kanban === 'Terminado' ? 'bg-emerald-500' : 'bg-[#b9884f]'"
+                           [style.width.%]="item.progreso_porcentaje"></div>
+                    </div>
+                    <span class="text-[10px] font-semibold px-2 py-1 rounded-full"
+                          [ngClass]="item.fase_kanban === 'Terminado' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'">
+                      {{ item.fase_kanban }}
+                    </span>
+                  </div>
+
+                  <!-- Reseña -->
+                  <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+                    <div *ngIf="item.calificacion_cliente" class="flex items-center gap-2 text-[11px] text-stone-500">
+                      <span class="flex text-amber-500">
+                        <span *ngFor="let e of estrellas" [ngClass]="e <= item.calificacion_cliente ? 'text-amber-500' : 'text-stone-300'">★</span>
+                      </span>
+                      <span class="italic" *ngIf="item.comentario_resena">“{{ item.comentario_resena }}”</span>
+                    </div>
+                    <span *ngIf="!item.calificacion_cliente && !item.puede_resenar" class="text-[10px] text-stone-400">
+                      La reseña se habilita cuando la pieza esté terminada.
+                    </span>
+
+                    <button *ngIf="item.puede_resenar" (click)="abrirResena(item)"
+                            class="px-3 py-1.5 text-[11px] rounded-lg border font-semibold"
+                            [ngClass]="item.calificacion_cliente ? 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50' : 'bg-[#6E121E] text-white border-[#6E121E] hover:bg-[#5a0e18]'">
+                      {{ item.calificacion_cliente ? 'Editar reseña' : '★ Calificar y reseñar' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-stone-200 bg-white py-6 mt-6">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap justify-between items-center gap-3 text-[11px] text-stone-400">
+      <span>© 2026 Atelier · Carpintería y Mueblería MaderaFina · León, Gto.</span>
+      <span>PWA · Catálogo, carrito y rastreo de producción en tiempo real.</span>
+    </div>
+  </footer>
+
+  <!-- ================= DRAWER DEL CARRITO ================= -->
+  <div *ngIf="carritoAbierto" class="fixed inset-0 z-50">
+    <div class="absolute inset-0 bg-stone-900/40 backdrop-blur-sm" (click)="cerrarCarrito()"></div>
+
+    <aside class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col" (click)="$event.stopPropagation()">
+      <div class="p-5 border-b border-stone-200 flex justify-between items-center">
+        <div>
+          <span class="text-[10px] tracking-widest text-stone-400">TU SELECCIÓN</span>
+          <h3 class="text-xl font-serif text-[#6E121E]">Carrito de compra</h3>
+        </div>
+        <button (click)="cerrarCarrito()" class="w-9 h-9 rounded-full border border-stone-200 text-stone-500 hover:bg-stone-50">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-5 space-y-4">
+        <div *ngIf="carrito.length === 0" class="h-full flex flex-col items-center justify-center text-center">
+          <span class="text-5xl">🛒</span>
+          <p class="text-sm text-stone-500 mt-3">Tu carrito está vacío.</p>
+          <button (click)="cerrarCarrito()" class="mt-3 text-xs text-[#6E121E] font-semibold hover:underline">Seguir explorando</button>
+        </div>
+
+        <div *ngFor="let item of carrito" class="flex gap-3 p-3 rounded-xl border border-stone-200 bg-[#fbf8f5]">
+          <div class="w-16 h-16 rounded-lg bg-white border border-stone-200 flex items-center justify-center shrink-0 overflow-hidden">
+            <img *ngIf="item.imagen_url" [src]="item.imagen_url" [alt]="item.nombre"
+                 (error)="item.imagen_url = null" class="w-full h-full object-cover">
+            <span *ngIf="!item.imagen_url" class="text-2xl">🪑</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between gap-2">
+              <strong class="text-xs text-stone-800 leading-snug">{{ item.nombre }}</strong>
+              <button (click)="quitarDelCarrito(item)" class="text-stone-400 hover:text-red-500 text-xs">✕</button>
+            </div>
+            <span class="text-[10px] text-stone-400">{{ item.categoria }}</span>
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex items-center border border-stone-200 rounded-lg bg-white">
+                <button (click)="disminuir(item)" class="w-7 h-7 text-stone-600 hover:bg-stone-50 rounded-l-lg">−</button>
+                <span class="w-7 text-center text-xs font-semibold">{{ item.cantidad }}</span>
+                <button (click)="aumentar(item)" class="w-7 h-7 text-stone-600 hover:bg-stone-50 rounded-r-lg">＋</button>
+              </div>
+              <strong class="text-xs text-[#6E121E]">{{ item.precio_venta * item.cantidad | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="carrito.length > 0" class="pt-2">
+          <label class="block text-xs text-stone-500 mb-1">Dirección de entrega *</label>
+          <textarea [(ngModel)]="direccion" rows="3" placeholder="Calle, número, colonia, ciudad y referencias"
+                    class="w-full px-3 py-2.5 border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#6E121E] bg-white resize-none"></textarea>
+          <p class="text-[10px] text-stone-400 mt-1">La dirección se guardará en tu perfil de cliente al confirmar el pedido.</p>
+        </div>
+      </div>
+
+      <div class="p-5 border-t border-stone-200 bg-white">
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-stone-500">Cliente</span>
+          <span class="font-medium text-stone-700">{{ cliente?.nombre || 'Ana Cliente' }}</span>
+        </div>
+        <div class="flex justify-between text-sm mb-3">
+          <span class="text-stone-500">Subtotal ({{ carritoCantidad }} artículos)</span>
+          <strong class="text-[#6E121E]">{{ carritoTotal | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+        </div>
+        <div class="rounded-lg bg-[#fbf8f5] border border-stone-200 px-3 py-2 text-[10px] text-stone-500 mb-4">
+          Producción a medida · El pedido se crea como <strong>Pagado</strong> y entra al Kanban en fase <strong>Pendiente</strong>.
+        </div>
+        <button (click)="finalizarCompra()" [disabled]="procesandoCheckout || carrito.length === 0"
+                class="w-full py-3 bg-[#6E121E] text-white text-sm font-semibold rounded-lg hover:bg-[#5a0e18] disabled:opacity-50 shadow-sm">
+          {{ procesandoCheckout ? 'Procesando pedido...' : 'Confirmar pedido · ' + (carritoTotal | currency:'MXN':'symbol-narrow':'1.0-0') }}
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ================= MODAL DE RESEÑA ================= -->
+  <div *ngIf="modalResenaAbierto" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-md p-6">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <span class="text-[10px] tracking-widest text-stone-400">PIEZA TERMINADA</span>
+          <h3 class="text-xl font-serif text-[#6E121E] mt-1">Califica tu mueble</h3>
+          <p class="text-xs text-stone-500 mt-1">{{ resena.producto }}</p>
+        </div>
+        <button (click)="modalResenaAbierto = false" class="text-stone-400 hover:text-stone-700">✕</button>
+      </div>
+
+      <div class="text-center py-3">
+        <div class="flex justify-center gap-2">
+          <button *ngFor="let e of estrellas" (click)="resena.calificacion = e"
+                  class="text-4xl transition-transform hover:scale-110"
+                  [ngClass]="e <= resena.calificacion ? 'text-amber-500' : 'text-stone-300'">★</button>
+        </div>
+        <span class="text-xs text-stone-500 mt-2 block">{{ resena.calificacion }} de 5 estrellas</span>
+      </div>
+
+      <label class="block text-xs text-stone-500 mb-1 mt-3">Cuéntanos sobre el acabado, la madera y la entrega</label>
+      <textarea [(ngModel)]="resena.comentario" rows="4" placeholder="Ej. Excelente acabado en la madera y puntualidad en la entrega..."
+                class="w-full px-3 py-2.5 border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#6E121E] resize-none"></textarea>
+
+      <div class="flex justify-end gap-3 mt-5">
+        <button (click)="modalResenaAbierto = false" class="px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-100 rounded-lg">Cancelar</button>
+        <button (click)="enviarResena()" [disabled]="guardandoResena"
+                class="px-4 py-2.5 text-sm bg-[#6E121E] text-white rounded-lg hover:bg-[#5a0e18] disabled:opacity-50">
+          {{ guardandoResena ? 'Guardando...' : 'Publicar reseña' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

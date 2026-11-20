@@ -1,0 +1,377 @@
+<div class="flex h-screen bg-[#FAF8F5] font-sans text-stone-800 overflow-hidden">
+
+  <!-- BARRA LATERAL -->
+  <aside
+    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'"
+    class="bg-white border-r border-stone-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-hidden shrink-0">
+
+    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
+      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-9 h-9 object-contain">
+      <div *ngIf="sidebarAbierta">
+        <h2 class="text-[#6E121E] font-serif text-2xl m-0 leading-none">Atelier</h2>
+        <span class="text-[10px] text-stone-500 tracking-widest">CARPINTERÍA FINA</span>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-stone-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
+      <a routerLink="/dashboard" routerLinkActive="bg-[#6E121E] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-3 text-sm text-stone-600 hover:bg-stone-100 transition-colors" title="Panel de Control">
+        <span class="text-lg">📊</span>
+        <span *ngIf="sidebarAbierta">Panel de Control</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-stone-400 px-6 mb-2 block tracking-widest">TALLER Y PRODUCCIÓN</span>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-stone-600 hover:bg-stone-100 transition-colors">
+        <span class="text-lg">📐</span> <span *ngIf="sidebarAbierta">Armado y Fabricación</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-stone-600 hover:bg-stone-100 transition-colors">
+        <span class="text-lg">🖌️</span> <span *ngIf="sidebarAbierta">Pintura y Acabados</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-stone-400 px-6 mb-2 block tracking-widest">INVENTARIO Y MATERIALES</span>
+      <a routerLink="/compras" routerLinkActive="bg-[#6E121E] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-stone-600 hover:bg-stone-100 transition-colors" title="Compras">
+        <span class="text-lg">📦</span> <span *ngIf="sidebarAbierta">Compras Generales</span>
+      </a>
+      <a routerLink="/almacen" routerLinkActive="bg-[#6E121E] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-stone-600 hover:bg-stone-100 transition-colors" title="Almacén">
+        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Almacén e Inventarios</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-stone-400 px-6 mb-2 block tracking-widest">COMERCIO DIGITAL</span>
+      <a routerLink="/ecommerce" routerLinkActive="bg-[#6E121E] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-stone-600 hover:bg-stone-100 transition-colors" title="Tienda en línea">
+        <span class="text-lg">🛒</span> <span *ngIf="sidebarAbierta">Tienda en Línea</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-stone-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
+      <a routerLink="/usuarios" routerLinkActive="bg-[#6E121E] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-stone-600 hover:bg-stone-100 transition-colors" title="Usuarios">
+        <span class="text-lg">🫂</span> <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
+      </a>
+    </div>
+
+    <div class="mt-auto px-6" *ngIf="sidebarAbierta">
+      <div class="rounded-xl bg-stone-50 border border-stone-200 p-3">
+        <span class="text-[10px] tracking-widest text-stone-400 block">SEDE ACTIVA</span>
+        <span class="text-xs text-stone-600">Taller Central · León, Gto.</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
+
+    <header class="flex justify-between items-center mb-8">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()" class="text-stone-500 hover:text-[#6E121E] transition-colors p-2 text-2xl focus:outline-none">☰</button>
+        <div class="bg-white px-4 py-2 rounded-full border border-stone-200 text-sm shadow-sm text-stone-600 flex items-center gap-2">
+          🏢 Taller Central
+          <span class="text-emerald-500 text-[10px]">●</span>
+          <span class="text-xs text-stone-400">Sincronizado con atelier_db</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right leading-tight">
+          <strong class="block text-sm text-stone-800">{{ usuario?.nombre || 'Carlos Almacén' }}</strong>
+          <span class="text-[11px] text-stone-500">{{ usuario?.nombre_rol || 'Almacén' }}</span>
+        </div>
+        <div class="w-10 h-10 bg-[#6E121E] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">AL</div>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6E121E] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <!-- TÍTULO Y ACCIONES -->
+    <div class="flex flex-wrap justify-between items-end gap-4 mb-7">
+      <div>
+        <span class="uppercase tracking-[0.2em] text-[10px] text-stone-500">INVENTARIO • CONTROL DE MATERIA PRIMA</span>
+        <h1 class="text-3xl text-[#6E121E] font-serif mt-1">Almacén e Inventarios</h1>
+        <p class="text-sm text-stone-500 mt-1">Stock físico, comprometido en órdenes de trabajo y alertas de reorden del taller.</p>
+      </div>
+      <div class="flex gap-3">
+        <button (click)="cargarDatos()" class="px-4 py-2.5 bg-white border border-stone-200 text-stone-700 text-sm rounded-lg hover:bg-stone-50 flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>↻</span> Actualizar
+        </button>
+        <a routerLink="/compras" class="px-4 py-2.5 bg-white border border-stone-200 text-stone-700 text-sm rounded-lg hover:bg-stone-50 flex items-center gap-2 shadow-sm">
+          <span>📦</span> Ir a Compras
+        </a>
+        <button (click)="abrirModalNuevo()" class="px-4 py-2.5 bg-[#6E121E] text-white text-sm rounded-lg hover:bg-[#5a0e18] flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>＋</span> Registrar Insumo
+        </button>
+      </div>
+    </div>
+
+    <!-- ALERTAS -->
+    <div *ngIf="error" class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex justify-between">
+      <span>{{ error }}</span>
+      <button (click)="error = ''" class="text-red-500">✕</button>
+    </div>
+
+    <div *ngIf="mensaje" class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 flex justify-between">
+      <span>{{ mensaje }}</span>
+      <button (click)="mensaje = ''" class="text-emerald-500">✕</button>
+    </div>
+
+    <div *ngIf="materialesAlerta.length > 0" class="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-start gap-3">
+        <span class="text-xl">⚠️</span>
+        <div>
+          <strong class="text-sm text-amber-900">Alerta de reorden: {{ materialesAlerta.length }} insumo(s) en o por debajo del mínimo</strong>
+          <p class="text-xs text-amber-800 mt-0.5">
+            {{ materialesAlerta[0].nombre }}<span *ngIf="materialesAlerta.length > 1"> y {{ materialesAlerta.length - 1 }} más</span>.
+            Genera una requisición para reabastecer el taller.
+          </p>
+        </div>
+      </div>
+      <a routerLink="/compras" class="px-4 py-2 bg-amber-900 text-white text-xs rounded-lg hover:bg-amber-950">Crear requisición</a>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7">
+      <div class="bg-white rounded-xl border border-stone-200 shadow-sm p-5">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="text-[10px] text-stone-400 tracking-widest">STOCK Y VALUACIÓN TOTAL</span>
+            <strong class="block text-2xl text-stone-800 mt-3">{{ resumen.valor_inventario | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+            <span class="text-xs text-stone-500">{{ resumen.unidades_totales | number:'1.0-0' }} unidades · {{ resumen.total_materiales }} insumos</span>
+          </div>
+          <span class="w-10 h-10 rounded-lg bg-[#f7ecee] text-[#6E121E] flex items-center justify-center text-lg">🪵</span>
+        </div>
+        <div class="mt-4 h-1.5 rounded-full bg-stone-100 overflow-hidden">
+          <div class="h-full bg-[#6E121E] rounded-full" style="width: 78%"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-stone-200 shadow-sm p-5">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="text-[10px] text-stone-400 tracking-widest">ALERTAS DE STOCK BAJO</span>
+            <strong class="block text-2xl text-stone-800 mt-3">{{ resumen.alertas_stock_bajo }}</strong>
+            <span class="text-xs" [ngClass]="resumen.alertas_stock_bajo > 0 ? 'text-amber-600' : 'text-emerald-600'">
+              {{ resumen.alertas_stock_bajo > 0 ? 'Requieren atención del almacén' : 'Todo el inventario está sano' }}
+            </span>
+          </div>
+          <span class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg">⚠️</span>
+        </div>
+        <div class="mt-4 flex gap-1.5">
+          <span *ngFor="let m of materiales | slice:0:18" class="h-1.5 flex-1 rounded-full"
+                [ngClass]="m.alerta_stock_bajo ? 'bg-amber-500' : 'bg-emerald-300'"></span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-stone-200 shadow-sm p-5">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="text-[10px] text-stone-400 tracking-widest">COMPROMETIDO EN OT</span>
+            <strong class="block text-2xl text-stone-800 mt-3">{{ resumen.comprometido_total | number:'1.0-2' }}</strong>
+            <span class="text-xs text-stone-500">Unidades reservadas en fase <strong>Pendiente</strong></span>
+          </div>
+          <span class="w-10 h-10 rounded-lg bg-stone-100 text-stone-600 flex items-center justify-center text-lg">📐</span>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-[11px] text-stone-500">
+          <span class="w-2 h-2 rounded-full bg-[#6E121E]"></span> Calculado con receta + detalle de producción
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="bg-white rounded-xl border border-stone-200 shadow-sm p-4 mb-5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap gap-2">
+        <button (click)="cambiarFiltro('TODOS')"
+                [ngClass]="filtro === 'TODOS' ? 'bg-[#6E121E] text-white border-[#6E121E]' : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'"
+                class="px-4 py-1.5 text-xs rounded-full border transition-colors cursor-pointer">Todos ({{ materiales.length }})</button>
+        <button (click)="cambiarFiltro('BAJO')"
+                [ngClass]="filtro === 'BAJO' ? 'bg-[#6E121E] text-white border-[#6E121E]' : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'"
+                class="px-4 py-1.5 text-xs rounded-full border transition-colors cursor-pointer">Stock bajo ({{ resumen.alertas_stock_bajo }})</button>
+        <button (click)="cambiarFiltro('REORDEN')"
+                [ngClass]="filtro === 'REORDEN' ? 'bg-[#6E121E] text-white border-[#6E121E]' : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'"
+                class="px-4 py-1.5 text-xs rounded-full border transition-colors cursor-pointer">Requiere reorden ({{ resumen.requieren_reorden }})</button>
+        <button (click)="cambiarFiltro('NORMAL')"
+                [ngClass]="filtro === 'NORMAL' ? 'bg-[#6E121E] text-white border-[#6E121E]' : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'"
+                class="px-4 py-1.5 text-xs rounded-full border transition-colors cursor-pointer">Inventario sano</button>
+      </div>
+      <div class="relative w-full md:w-72">
+        <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
+        <input type="text" [(ngModel)]="busqueda" (ngModelChange)="actualizarBusqueda()" placeholder="Buscar insumo o unidad..."
+               class="w-full pl-9 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#6E121E]">
+      </div>
+    </div>
+
+    <!-- TABLA DE MATERIALES -->
+    <div class="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden mb-7">
+      <div class="grid grid-cols-12 gap-3 bg-[#fbf8f5] border-b border-stone-200 px-5 py-3 text-[10px] text-stone-500 uppercase tracking-widest">
+        <div class="col-span-4">Insumo</div>
+        <div class="col-span-4">Stock actual vs. mínimo</div>
+        <div class="col-span-1 text-right">Comprometido</div>
+        <div class="col-span-1 text-right">Costo unit.</div>
+        <div class="col-span-1 text-right">Valor</div>
+        <div class="col-span-1 text-right">Estado</div>
+      </div>
+
+      <div *ngFor="let m of materialesFiltrados" class="grid grid-cols-12 gap-3 px-5 py-4 border-b border-stone-100 hover:bg-stone-50/70 items-center transition-colors">
+        <div class="col-span-4 flex items-center gap-3 min-w-0">
+          <div class="w-9 h-9 rounded-lg bg-[#f7ecee] text-[#6E121E] flex items-center justify-center shrink-0">🪵</div>
+          <div class="min-w-0">
+            <strong class="block text-sm text-stone-800 truncate">{{ m.nombre }}</strong>
+            <span class="text-[11px] text-stone-500">#{{ m.id_material }} · {{ m.unidad_medida }}</span>
+          </div>
+        </div>
+
+        <div class="col-span-4">
+          <div class="flex justify-between text-[11px] mb-1.5">
+            <span class="font-semibold text-stone-700">{{ m.stock_actual | number:'1.0-2' }} {{ m.unidad_medida }}</span>
+            <span class="text-stone-400">mín. {{ m.stock_minimo | number:'1.0-2' }}</span>
+          </div>
+          <div class="relative h-2.5 rounded-full bg-stone-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" [ngClass]="colorBarra(m)" [style.width.%]="barraActual(m)"></div>
+            <div class="absolute top-0 bottom-0 w-0.5 bg-stone-600/70" [style.left.%]="barraMinimo(m)" title="Stock mínimo"></div>
+          </div>
+          <div class="flex justify-between text-[10px] mt-1">
+            <span [ngClass]="m.alerta_stock_bajo ? 'text-amber-600 font-semibold' : 'text-emerald-600'">
+              {{ m.alerta_stock_bajo ? 'Bajo mínimo' : 'Sobre mínimo' }}
+            </span>
+            <span class="text-stone-400">{{ m.porcentaje_vs_minimo | number:'1.0-0' }}% del mínimo</span>
+          </div>
+        </div>
+
+        <div class="col-span-1 text-right">
+          <span class="block text-sm font-semibold" [ngClass]="m.stock_comprometido > 0 ? 'text-[#6E121E]' : 'text-stone-400'">
+            {{ m.stock_comprometido | number:'1.0-2' }}
+          </span>
+          <span class="text-[10px] text-stone-400">disp. {{ m.stock_disponible | number:'1.0-2' }}</span>
+        </div>
+
+        <div class="col-span-1 text-right text-sm text-stone-700">{{ m.costo_unitario | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+        <div class="col-span-1 text-right text-sm font-semibold text-stone-800">{{ m.valor_inventario | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+
+        <div class="col-span-1 text-right">
+          <span *ngIf="m.alerta_stock_bajo" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-semibold">● Bajo</span>
+          <span *ngIf="!m.alerta_stock_bajo && m.requiere_reorden" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-orange-50 text-orange-700 text-[10px] font-semibold">● Reorden</span>
+          <span *ngIf="!m.alerta_stock_bajo && !m.requiere_reorden" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-semibold">● Sano</span>
+        </div>
+      </div>
+
+      <div *ngIf="!cargando && materialesFiltrados.length === 0" class="p-10 text-center text-sm text-stone-400">
+        No hay insumos que coincidan con el filtro seleccionado.
+      </div>
+      <div *ngIf="cargando" class="p-10 text-center text-sm text-stone-400">Cargando inventario desde atelier_db...</div>
+    </div>
+
+    <!-- KARDEX -->
+    <div class="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
+      <div class="flex justify-between items-center px-5 py-4 border-b border-stone-200">
+        <div>
+          <h3 class="text-lg font-serif text-[#6E121E]">Movimientos y Kardex recientes</h3>
+          <p class="text-xs text-stone-500">Entradas al almacén y requisiciones registradas desde el módulo de compras.</p>
+        </div>
+        <span class="text-[10px] tracking-widest text-stone-400">ÚLTIMOS 20 MOVIMIENTOS</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-[#fbf8f5] text-[10px] uppercase tracking-widest text-stone-500">
+              <th class="text-left px-5 py-3 font-medium">Fecha</th>
+              <th class="text-left px-5 py-3 font-medium">Movimiento</th>
+              <th class="text-left px-5 py-3 font-medium">Insumo</th>
+              <th class="text-right px-5 py-3 font-medium">Cantidad</th>
+              <th class="text-left px-5 py-3 font-medium">Proveedor</th>
+              <th class="text-left px-5 py-3 font-medium">Solicitante</th>
+              <th class="text-right px-5 py-3 font-medium">Importe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mov of movimientos" class="border-b border-stone-100 hover:bg-stone-50/70">
+              <td class="px-5 py-3 text-xs text-stone-500 whitespace-nowrap">{{ mov.fecha || '—' }}</td>
+              <td class="px-5 py-3">
+                <span class="inline-flex px-2 py-1 rounded-full text-[10px] font-semibold"
+                      [ngClass]="mov.tipo === 'Entrada' ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-stone-600'">
+                  {{ mov.tipo === 'Entrada' ? '↓ Entrada' : '↑ Solicitud' }}
+                </span>
+              </td>
+              <td class="px-5 py-3 text-stone-700">{{ mov.material }}</td>
+              <td class="px-5 py-3 text-right text-stone-700">{{ mov.cantidad | number:'1.0-2' }} {{ mov.unidad_medida }}</td>
+              <td class="px-5 py-3 text-stone-600">{{ mov.proveedor }}</td>
+              <td class="px-5 py-3 text-stone-600">{{ mov.solicitante }}</td>
+              <td class="px-5 py-3 text-right font-semibold text-stone-800">{{ mov.costo_total | currency:'MXN':'symbol-narrow':'1.0-0' }}</td>
+            </tr>
+            <tr *ngIf="movimientos.length === 0">
+              <td colspan="7" class="px-5 py-8 text-center text-stone-400">Aún no hay movimientos registrados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL REGISTRAR INSUMO -->
+  <div *ngIf="modalNuevoAbierto" class="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl border border-stone-200">
+      <div class="flex justify-between items-start mb-5">
+        <div>
+          <span class="text-[10px] tracking-widest text-stone-400">ALMACÉN · NUEVO INSUMO</span>
+          <h3 class="text-xl font-serif text-[#6E121E] mt-1">Registrar materia prima</h3>
+        </div>
+        <button (click)="modalNuevoAbierto = false" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div>
+          <label class="block text-xs text-stone-500 mb-1">Nombre del insumo *</label>
+          <input type="text" [(ngModel)]="nuevoMaterial.nombre" placeholder="Ej. Tablón de Parota 2.40m"
+                 class="w-full px-3 py-2.5 border border-stone-200 rounded-lg focus:outline-none focus:border-[#6E121E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-stone-500 mb-1">Unidad de medida *</label>
+            <select [(ngModel)]="nuevoMaterial.unidad_medida" class="w-full px-3 py-2.5 border border-stone-200 rounded-lg bg-white focus:outline-none focus:border-[#6E121E]">
+              <option>Piezas</option>
+              <option>Hojas</option>
+              <option>Litros</option>
+              <option>Juegos</option>
+              <option>Kilos</option>
+              <option>Metros</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-stone-500 mb-1">Costo unitario (MXN) *</label>
+            <input type="number" min="0" step="0.01" [(ngModel)]="nuevoMaterial.costo_unitario"
+                   class="w-full px-3 py-2.5 border border-stone-200 rounded-lg focus:outline-none focus:border-[#6E121E]">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-stone-500 mb-1">Stock inicial</label>
+            <input type="number" min="0" step="0.01" [(ngModel)]="nuevoMaterial.stock_actual"
+                   class="w-full px-3 py-2.5 border border-stone-200 rounded-lg focus:outline-none focus:border-[#6E121E]">
+          </div>
+          <div>
+            <label class="block text-xs text-stone-500 mb-1">Stock mínimo</label>
+            <input type="number" min="0" step="0.01" [(ngModel)]="nuevoMaterial.stock_minimo"
+                   class="w-full px-3 py-2.5 border border-stone-200 rounded-lg focus:outline-none focus:border-[#6E121E]">
+          </div>
+        </div>
+        <div class="rounded-lg bg-stone-50 border border-stone-200 p-3 text-xs text-stone-600 flex justify-between">
+          <span>Valor inicial del inventario</span>
+          <strong class="text-[#6E121E]">{{ (nuevoMaterial.stock_actual * nuevoMaterial.costo_unitario) | currency:'MXN':'symbol-narrow':'1.0-0' }}</strong>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="modalNuevoAbierto = false" class="px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-100 rounded-lg">Cancelar</button>
+        <button (click)="guardarMaterial()" [disabled]="guardando"
+                class="px-4 py-2.5 text-sm bg-[#6E121E] text-white rounded-lg hover:bg-[#5a0e18] disabled:opacity-50">
+          {{ guardando ? 'Guardando...' : 'Guardar insumo' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
