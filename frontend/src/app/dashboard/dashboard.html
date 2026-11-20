@@ -1,0 +1,183 @@
+<div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
+  
+  <!-- BARRA LATERAL (SIDEBAR) DINÁMICA CON LOGO -->
+  <aside 
+    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'" 
+    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-hidden">
+    
+    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
+      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
+      <div *ngIf="sidebarAbierta">
+        <h2 class="text-[#6b1d24] font-serif text-2xl m-0 leading-none">Atelier</h2>
+        <span class="text-[10px] text-gray-500 tracking-widest">CARPINTERÍA DIGITAL</span>
+      </div>
+    </div>
+
+    <!-- Menú 1: Visión General -->
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
+      <a routerLink="/dashboard" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Panel de Control">
+        <span class="text-lg">📊</span> 
+        <span *ngIf="sidebarAbierta">Panel de Control</span>
+      </a>
+    </div>
+
+    <!-- Menú 2: Taller y Producción -->
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">TALLER Y PRODUCCIÓN</span>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Armado">
+        <span class="text-lg">📐</span> <span *ngIf="sidebarAbierta">Armado y Fabricación</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Pintura">
+        <span class="text-lg">🖌️</span> <span *ngIf="sidebarAbierta">Pintura y Acabados</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Instalaciones">
+        <span class="text-lg">🛠️</span> <span *ngIf="sidebarAbierta">Instalaciones con Cliente</span>
+      </a>
+    </div>
+
+    <!-- Menú 3: Inventario y Materiales -->
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y MATERIALES</span>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Compras">
+        <span class="text-lg">📦</span> <span *ngIf="sidebarAbierta">Compras Generales</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Bodega">
+        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Bodega de Madera</span>
+      </a>
+    </div>
+
+    <!-- Menú 4: Administración -->
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
+      <a routerLink="/usuarios" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Gestión de Usuarios">
+        <span class="text-lg">🫂</span> 
+        <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
+    
+    <!-- Encabezado superior -->
+    <header class="flex justify-between items-center mb-8">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()" class="text-gray-500 hover:text-[#6b1d24] transition-colors p-2 text-2xl focus:outline-none">
+          ☰
+        </button>
+        <div class="bg-white px-4 py-2 rounded-full border border-gray-200 text-sm shadow-sm text-gray-600">
+          🏢 Taller Central - León, Gto. ⌄
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right leading-tight">
+          <strong class="block text-sm text-gray-800">{{ usuario?.nombre || 'Liz Ponce' }}</strong>
+          <span class="text-[11px] text-gray-500">{{ usuario?.nombre_rol || 'Analista de Datos' }}</span>
+        </div>
+        <div class="w-10 h-10 bg-[#5c4938] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">
+          LP
+        </div>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <!-- Gráfica Principal -->
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+      <div class="relative w-full h-[300px]">
+        <canvas #graficaVentas></canvas>
+      </div>
+    </div>
+
+    <!-- KPIs Intermedios -->
+    <div class="flex bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
+      <div class="flex-1 text-center p-6 border-r border-gray-100">
+        <span class="block text-[11px] text-gray-500 tracking-widest mb-2">GANANCIA LIBRE</span>
+        <span class="text-xl font-bold text-gray-800">58.6%</span>
+      </div>
+      <div class="flex-1 text-center p-6 border-r border-gray-100">
+        <span class="block text-[11px] text-gray-500 tracking-widest mb-2">DESPERDICIO DE MADERA</span>
+        <span class="text-xl font-bold text-gray-800">4.1%</span>
+      </div>
+      <div class="flex-1 text-center p-6">
+        <span class="block text-[11px] text-gray-500 tracking-widest mb-2">COSTO DE PINTURA POR M2</span>
+        <span class="text-xl font-bold text-gray-800">$412 MXN</span>
+      </div>
+    </div>
+
+    <!-- Sección Inferior: Embudo y Colores -->
+    <div class="grid grid-cols-2 gap-6">
+      
+      <!-- Widget: Proceso de Ventas Actualizado -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col">
+        <div class="flex justify-between text-[10px] mb-2">
+          <span class="uppercase tracking-wide text-[#b89b82]">VENTAS POR INTERNET</span>
+          <span class="text-[#4a5568] font-medium">Cierres de Venta: 14.8%</span>
+        </div>
+        <h4 class="text-lg text-gray-800 mb-4">Proceso de Ventas a Medida</h4>
+        
+        <div class="flex justify-between py-3 border-b border-gray-100 text-sm text-gray-600">
+          <span>Personas viendo el Catálogo</span>
+          <strong class="text-gray-900">4,120</strong>
+        </div>
+        <div class="flex justify-between py-3 border-b border-gray-100 text-sm text-gray-600">
+          <span>Cotizaciones Solicitadas</span>
+          <strong class="text-gray-900">618 <span class="text-gray-400 text-xs font-normal">(15%)</span></strong>
+        </div>
+        <div class="flex justify-between py-3 border-b border-gray-100 text-sm text-gray-600">
+          <span>Muestras de Color Enviadas</span>
+          <strong class="text-gray-900">184 <span class="text-gray-400 text-xs font-normal">(4.4%)</span></strong>
+        </div>
+        <div class="flex justify-between py-3 text-sm text-[#5b1e24] font-medium">
+          <span>Ventas Cerradas (Con Anticipo)</span>
+          <strong class="text-[#5b1e24]">91 <span class="text-[#7a484c] text-xs font-normal">(2.2%)</span></strong>
+        </div>
+
+        <!-- Banner de Clientes Esperando -->
+        <div class="mt-4 bg-[#f8f5f4] rounded-md p-3 flex justify-between items-center text-sm">
+          <span class="text-gray-700 flex items-center gap-2">
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            8 Clientes Esperando Respuesta
+          </span>
+          <a href="javascript:void(0)" class="text-[#5b1e24] font-semibold text-xs hover:underline">Ir a Mensajes</a>
+        </div>
+      </div>
+
+      <!-- Widget: Colores Más Solicitados -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex justify-between text-[10px] text-gray-400 mb-2">
+          <span class="uppercase tracking-wide">Catálogo de Colores</span>
+          <span class="uppercase tracking-wide">Colección Ébano</span>
+        </div>
+        <h4 class="text-lg text-gray-800 mb-6">Colores Más Solicitados</h4>
+        <div class="flex gap-4">
+          <div class="flex-1 bg-[#6b1d24] text-white rounded-lg p-4 flex flex-col justify-between">
+            <span class="text-[10px] opacity-80 tracking-widest">COLOR</span>
+            <div class="mt-6">
+              <strong class="block text-sm">Rojo Cetro</strong>
+              <span class="text-[10px] opacity-70">Barniz Cerezo</span>
+            </div>
+          </div>
+          <div class="flex-1 bg-[#d8e8f8] text-gray-800 rounded-lg p-4 flex flex-col justify-between">
+            <span class="text-[10px] text-blue-400 tracking-widest">COLOR</span>
+            <div class="mt-6">
+              <strong class="block text-sm">Nantucket</strong>
+              <span class="text-[10px] text-gray-500">Acabado Ceniza</span>
+            </div>
+          </div>
+          <div class="flex-1 bg-[#f7f4f0] text-gray-800 border border-gray-200 rounded-lg p-4 flex flex-col justify-between">
+            <span class="text-[10px] text-gray-400 tracking-widest">COLOR</span>
+            <div class="mt-6">
+              <strong class="block text-sm">Blanco Brillante</strong>
+              <span class="text-[10px] text-gray-500">Laca Blanca</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>

@@ -1,0 +1,307 @@
+<div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
+  
+  <!-- BARRA LATERAL (SIDEBAR) -->
+  <aside 
+    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'" 
+    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-hidden">
+    
+    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
+      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
+      <div *ngIf="sidebarAbierta">
+        <h2 class="text-[#6b1d24] font-serif text-2xl m-0 leading-none">Atelier</h2>
+        <span class="text-[10px] text-gray-500 tracking-widest">CARPINTERÍA DIGITAL</span>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
+      <a routerLink="/dashboard" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Panel de Control">
+        <span class="text-lg">📊</span> 
+        <span *ngIf="sidebarAbierta">Panel de Control</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">TALLER Y PRODUCCIÓN</span>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📐</span> <span *ngIf="sidebarAbierta">Armado y Fabricación</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🖌️</span> <span *ngIf="sidebarAbierta">Pintura y Acabados</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🛠️</span> <span *ngIf="sidebarAbierta">Instalaciones con Cliente</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y MATERIALES</span>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📦</span> <span *ngIf="sidebarAbierta">Compras Generales</span>
+      </a>
+      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Bodega de Madera</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
+      <a routerLink="/usuarios" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Gestión de Usuarios">
+        <span class="text-lg">🫂</span> 
+        <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
+    
+    <!-- Encabezado superior -->
+    <header class="flex justify-between items-center mb-10">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()" class="text-gray-500 hover:text-[#6b1d24] transition-colors p-2 text-2xl focus:outline-none">☰</button>
+        <div class="bg-white px-4 py-2 rounded-full border border-gray-200 text-sm shadow-sm text-gray-600 flex items-center gap-2">
+          🏢 Taller Central - León, Gto. <span class="text-emerald-500 text-[10px]">●</span> Conexión Activa
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right leading-tight">
+          <strong class="block text-sm text-gray-800">{{ usuarioLogueado?.nombre || 'Admin General' }}</strong>
+          <span class="text-[11px] text-gray-500">{{ usuarioLogueado?.nombre_rol || 'Administrador' }}</span>
+        </div>
+        <div class="w-10 h-10 bg-[#6b1d24] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">LP</div>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <!-- Título y Botones de Acción Funcionales -->
+    <div class="flex justify-between items-end mb-6">
+      <div>
+        <span class="uppercase tracking-widest text-[10px] text-gray-500">ADMINISTRACIÓN • EQUIPO Y ACCESOS</span>
+        <h1 class="text-3xl text-[#6b1d24] font-serif mt-1">Directorio y Gestión de Usuarios</h1>
+        <p class="text-sm text-gray-500 mt-1">Control de perfiles del taller, carpinteros, técnicos de acabado y roles administrativos.<br>Sincronización en tiempo real con la base de datos.</p>
+      </div>
+      <div class="flex gap-3">
+        <button (click)="modalAuditoriaAbierto = true" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>⏱️</span> Auditoría de Sesiones
+        </button>
+        <button (click)="exportarNomina()" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>↓</span> Exportar Directorio
+        </button>
+        <button (click)="abrirModalNuevo()" class="px-4 py-2 bg-[#6b1d24] text-white text-sm rounded-lg hover:bg-[#5b191e] flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>👤+</span> Agregar Nuevo Usuario
+        </button>
+      </div>
+    </div>
+
+    <!-- KPIs Superiores Dinámicos -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">TOTAL REGISTRADOS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">{{ usuarios.length }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Personal en base de datos MySQL</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">EN BANCO / ACTIVOS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">{{ totalActivos }}</strong>
+          <p class="text-xs text-gray-500 mt-1">{{ totalActivos }} cuentas habilitadas hoy</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">OFICIOS Y ÁREAS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">9</strong>
+          <p class="text-xs text-gray-500 mt-1">Carpinteros, pintura, ventas, almacén...</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-[#6b1d24] tracking-widest">SEGURIDAD Y ACCESO</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">100%</strong>
+          <p class="text-xs text-gray-500 mt-1">Sincronizado con Atelier DB</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros de Píldoras Interactivos -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button (click)="seleccionarRol('TODOS')" 
+              [ngClass]="filtroRolActual === 'TODOS' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full shadow-sm transition-colors cursor-pointer">
+        Todos ({{ contarPorRol('TODOS') }})
+      </button>
+      <button (click)="seleccionarRol('ADMIN')" 
+              [ngClass]="filtroRolActual === 'ADMIN' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Admin ({{ contarPorRol('ADMIN') }})
+      </button>
+      <button (click)="seleccionarRol('CARPINTERO')" 
+              [ngClass]="filtroRolActual === 'CARPINTERO' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Carpintero ({{ contarPorRol('CARPINTERO') }})
+      </button>
+      <button (click)="seleccionarRol('BARNIZ')" 
+              [ngClass]="filtroRolActual === 'BARNIZ' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Acabados ({{ contarPorRol('BARNIZ') }})
+      </button>
+      <button (click)="seleccionarRol('INSTALADOR')" 
+              [ngClass]="filtroRolActual === 'INSTALADOR' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Instalación ({{ contarPorRol('INSTALADOR') }})
+      </button>
+      <button (click)="seleccionarRol('ALMACEN')" 
+              [ngClass]="filtroRolActual === 'ALMACEN' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Almacén ({{ contarPorRol('ALMACEN') }})
+      </button>
+    </div>
+
+    <!-- Barra de Búsqueda y Filtro Estado -->
+    <div class="flex justify-between items-center mb-4">
+      <div class="relative w-1/2">
+        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+        <input type="text" [(ngModel)]="textoBusqueda" (input)="aplicarFiltros()" 
+               placeholder="Buscar por nombre, correo o estación..." 
+               class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#6b1d24] shadow-sm">
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 uppercase tracking-widest">ESTADO:</span>
+        <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()" 
+                class="bg-white border border-gray-200 text-sm rounded-md px-3 py-1.5 outline-none shadow-sm text-gray-700">
+          <option value="TODOS">Todos</option>
+          <option value="ACTIVO">Activos</option>
+          <option value="OFFLINE">Offline</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tabla de Usuarios -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+      <div class="grid grid-cols-5 bg-[#fcfbfa] border-b border-gray-100 p-4 text-[10px] text-gray-500 uppercase tracking-widest">
+        <div class="col-span-1">USUARIO / EMPLEADO</div>
+        <div class="col-span-1">ROL & ÁREA</div>
+        <div class="col-span-1">ESTACIÓN / BANCO</div>
+        <div class="col-span-1">CONTACTO & REGISTRO</div>
+        <div class="col-span-1 text-right">ESTADO</div>
+      </div>
+      
+      <div *ngFor="let user of usuariosFiltrados" class="grid grid-cols-5 p-4 border-b border-gray-50 hover:bg-gray-50 items-center transition-colors">
+        <div class="col-span-1 flex items-center gap-3">
+          <div [ngClass]="[user.colorBg, user.colorTexto]" class="w-10 h-10 rounded-full flex justify-center items-center font-bold text-sm shadow-sm">
+            {{ user.iniciales }}
+          </div>
+          <div>
+            <strong class="block text-sm text-gray-800">{{ user.nombre }}</strong>
+            <span class="text-[11px] text-gray-500">{{ user.correo }}</span>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <span class="inline-block px-2 py-0.5 bg-gray-100 text-[10px] text-gray-600 rounded mb-1">{{ user.rolPrincipal }}</span>
+          <span class="block text-[11px] text-gray-500">{{ user.rolSecundario }}</span>
+        </div>
+        <div class="col-span-1">
+          <span class="block text-sm text-gray-700">{{ user.estacion }}</span>
+          <span class="block text-[11px] text-gray-500">{{ user.estacionSub }}</span>
+        </div>
+        <div class="col-span-1">
+          <span class="block text-sm text-gray-700">{{ user.acceso }}</span>
+          <span class="block text-[11px] text-gray-500">{{ user.accesoSub }}</span>
+        </div>
+        <div class="col-span-1 text-right flex items-center justify-end gap-1.5">
+          <span class="text-[8px]" [ngClass]="user.colorEstado">●</span>
+          <span class="text-xs font-medium text-gray-600">{{ user.estado }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="usuariosFiltrados.length === 0" class="p-8 text-center text-sm text-gray-400">
+        No se encontraron usuarios con esos filtros.
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL 1: AGREGAR NUEVO USUARIO -->
+  <div *ngIf="modalNuevoAbierto" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+    <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-100">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-serif text-[#6b1d24]">Registrar Nuevo Empleado</h3>
+        <button (click)="modalNuevoAbierto = false" class="text-gray-400 hover:text-gray-700 text-lg">✕</button>
+      </div>
+      
+      <div class="space-y-3 text-sm">
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Nombre Completo *</label>
+          <input type="text" [(ngModel)]="nuevoUsuario.nombre" placeholder="Ej. Juan Pérez" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24]">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Correo Electrónico *</label>
+          <input type="email" [(ngModel)]="nuevoUsuario.email" placeholder="juan@atelier.com" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Contraseña</label>
+            <input type="password" [(ngModel)]="nuevoUsuario.password" placeholder="123456" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24]">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Teléfono</label>
+            <input type="text" [(ngModel)]="nuevoUsuario.telefono" placeholder="4771000010" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24]">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Estación / Banco / Área</label>
+          <input type="text" [(ngModel)]="nuevoUsuario.direccion" placeholder="Ej. Banco #04 - Armado" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24]">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Rol en el Taller</label>
+          <select [(ngModel)]="nuevoUsuario.id_rol" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#6b1d24] bg-white">
+            <option [ngValue]="1">1 - Admin General</option>
+            <option [ngValue]="2">2 - Almacén</option>
+            <option [ngValue]="3">3 - Ventas</option>
+            <option [ngValue]="4">4 - Compras</option>
+            <option [ngValue]="5">5 - Cliente</option>
+            <option [ngValue]="6">6 - Carpintero</option>
+            <option [ngValue]="7">7 - Barnizador / Acabados</option>
+            <option [ngValue]="8">8 - Instalador</option>
+            <option [ngValue]="9">9 - Logística</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="modalNuevoAbierto = false" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
+        <button (click)="guardarNuevoUsuario()" class="px-4 py-2 text-sm bg-[#6b1d24] text-white rounded-lg hover:bg-[#5b191e]">Guardar en Base de Datos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: AUDITORÍA DE SESIONES -->
+  <div *ngIf="modalAuditoriaAbierto" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl border border-gray-100">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-serif text-[#6b1d24]">Auditoría de Accesos y Altas</h3>
+        <button (click)="modalAuditoriaAbierto = false" class="text-gray-400 hover:text-gray-700 text-lg">✕</button>
+      </div>
+      <div class="max-h-64 overflow-y-auto divide-y divide-gray-100 text-sm">
+        <div *ngFor="let u of usuarios" class="py-2.5 flex justify-between items-center">
+          <div>
+            <strong class="text-gray-800 block">{{ u.nombre }}</strong>
+            <span class="text-xs text-gray-500">{{ u.estacion }} • {{ u.rolPrincipal }}</span>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-medium text-emerald-600 block">{{ u.estado }}</span>
+            <span class="text-[11px] text-gray-400">{{ u.accesoSub }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end mt-5">
+        <button (click)="modalAuditoriaAbierto = false" class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
