@@ -1,0 +1,374 @@
+<div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
+
+  <!-- BARRA LATERAL (SIDEBAR) -->
+  <aside
+    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'"
+    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-y-auto">
+
+    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
+      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
+      <div *ngIf="sidebarAbierta">
+        <h2 class="text-[#6b1d24] font-serif text-2xl m-0 leading-none">Atelier</h2>
+        <span class="text-[10px] text-gray-500 tracking-widest">CARPINTERÍA DIGITAL</span>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
+      <a routerLink="/dashboard" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}"
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📊</span>
+        <span *ngIf="sidebarAbierta">Panel de Control</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VENTAS Y ATENCIÓN</span>
+      <a routerLink="/cotizaciones" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📝</span>
+        <span *ngIf="sidebarAbierta">Cotizaciones CRM</span>
+      </a>
+      <a routerLink="/ecommerce" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🛒</span>
+        <span *ngIf="sidebarAbierta">Tienda en Línea</span>
+      </a>
+      <a routerLink="/resenas" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">⭐</span>
+        <span *ngIf="sidebarAbierta">Reseñas y Encuestas</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y LOGÍSTICA</span>
+      <a routerLink="/compras" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📦</span>
+        <span *ngIf="sidebarAbierta">Compras Generales</span>
+      </a>
+      <a routerLink="/almacen" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🪵</span>
+        <span *ngIf="sidebarAbierta">Almacén e Inventarios</span>
+      </a>
+      <a routerLink="/logistica" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🚚</span>
+        <span *ngIf="sidebarAbierta">Logística e Instalaciones</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
+      <a routerLink="/usuarios" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🫂</span>
+        <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
+
+    <!-- Encabezado superior -->
+    <header class="flex justify-between items-center mb-10">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()" class="text-gray-500 hover:text-[#6b1d24] transition-colors p-2 text-2xl focus:outline-none">☰</button>
+        <div class="bg-white px-4 py-2 rounded-full border border-gray-200 text-sm shadow-sm text-gray-600 flex items-center gap-2">
+          🏢 Taller Central - León, Gto. <span class="text-emerald-500 text-[10px]">●</span> Conexión Activa
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right leading-tight">
+          <strong class="block text-sm text-gray-800">{{ usuarioLogueado?.nombre || 'Admin General' }}</strong>
+          <span class="text-[11px] text-gray-500">{{ usuarioLogueado?.nombre_rol || 'Administrador' }}</span>
+        </div>
+        <div class="w-10 h-10 bg-[#6b1d24] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">
+          {{ inicialesUsuario }}
+        </div>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <!-- Título y Botones -->
+    <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+      <div>
+        <span class="uppercase tracking-widest text-[10px] text-gray-500">VENTAS • EMBUDO COMERCIAL CRM</span>
+        <h1 class="text-3xl text-[#6b1d24] font-serif mt-1">Cotizaciones y Seguimiento Comercial</h1>
+        <p class="text-sm text-gray-500 mt-1">
+          Genera presupuestos a medida, calcula costos en tiempo real y convierte cotizaciones aprobadas en órdenes de taller.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button (click)="exportarCSV()" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>↓</span> Exportar CSV
+        </button>
+        <button (click)="abrirModalNueva()" class="px-4 py-2 bg-[#6b1d24] text-white text-sm rounded-lg hover:bg-[#5b191e] flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>＋</span> Nueva Cotización
+        </button>
+      </div>
+    </div>
+
+    <!-- Alerta de confirmación o error -->
+    <div *ngIf="mensajeAlerta"
+         [ngClass]="tipoAlerta === 'exito' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'"
+         class="mb-6 px-4 py-3 rounded-xl border text-sm flex justify-between items-center">
+      <span>{{ mensajeAlerta }}</span>
+      <button (click)="mensajeAlerta = ''" class="text-xs font-semibold underline cursor-pointer">Cerrar</button>
+    </div>
+
+    <!-- KPIs Superiores -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">COTIZACIONES ABIERTAS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">{{ resumen.cotizaciones_activas }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Monto en negociación: {{ resumen.monto_cotizado | currency:'MXN' }}</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">PEDIDOS CERRADOS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">{{ resumen.pedidos_cerrados }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Convertidos a orden de producción</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-[#6b1d24] tracking-widest">TASA DE CONVERSIÓN</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-[#6b1d24]">{{ resumen.tasa_conversion }}%</strong>
+          <p class="text-xs text-gray-500 mt-1">Efectividad comercial en Atelier</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">VENTAS CONFIRMADAS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-emerald-700">{{ resumen.monto_cerrado | currency:'MXN' }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Acumulado en pedidos aprobados</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros de Píldoras -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button (click)="seleccionarEstado('TODOS')"
+              [ngClass]="filtroEstado === 'TODOS' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full shadow-sm transition-colors cursor-pointer">
+        Todos ({{ contarPorEstado('TODOS') }})
+      </button>
+      <button (click)="seleccionarEstado('Cotizacion')"
+              [ngClass]="filtroEstado === 'Cotizacion' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Cotizaciones ({{ contarPorEstado('Cotizacion') }})
+      </button>
+      <button (click)="seleccionarEstado('Pagado')"
+              [ngClass]="filtroEstado === 'Pagado' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Pagados ({{ contarPorEstado('Pagado') }})
+      </button>
+      <button (click)="seleccionarEstado('En Produccion')"
+              [ngClass]="filtroEstado === 'En Produccion' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        En Producción ({{ contarPorEstado('En Produccion') }})
+      </button>
+      <button (click)="seleccionarEstado('Entregado')"
+              [ngClass]="filtroEstado === 'Entregado' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Entregados ({{ contarPorEstado('Entregado') }})
+      </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="mb-4">
+      <div class="relative w-full md:w-1/2">
+        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+        <input type="text" [(ngModel)]="textoBusqueda" (input)="aplicarFiltros()"
+               placeholder="Buscar por folio, nombre de cliente o vendedor..."
+               class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#6b1d24] shadow-sm">
+      </div>
+    </div>
+
+    <!-- Tabla de Cotizaciones -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#fcfbfa] border-b border-gray-100 text-[10px] text-gray-500 uppercase tracking-widest">
+            <th class="p-4">Folio & Fecha</th>
+            <th class="p-4">Cliente</th>
+            <th class="p-4">Vendedor / Canal</th>
+            <th class="p-4">Muebles</th>
+            <th class="p-4">Total</th>
+            <th class="p-4">Estado</th>
+            <th class="p-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50 text-sm">
+          <tr *ngFor="let cot of cotizacionesFiltradas" class="hover:bg-gray-50 transition-colors">
+            <td class="p-4">
+              <strong class="block text-gray-800">#{{ cot.id_pedido }}</strong>
+              <span class="text-[11px] text-gray-400">{{ cot.fecha_pedido }}</span>
+            </td>
+            <td class="p-4">
+              <strong class="block text-gray-800">{{ cot.cliente_nombre }}</strong>
+              <span class="text-[11px] text-gray-500">{{ cot.cliente_email }}</span>
+            </td>
+            <td class="p-4 text-gray-600 text-xs">
+              {{ cot.vendedor_nombre }}
+            </td>
+            <td class="p-4 text-xs text-gray-600">
+              <div *ngIf="cot.items.length > 0">
+                <div *ngFor="let it of cot.items">{{ it.cantidad }}x {{ it.producto_nombre }}</div>
+              </div>
+              <span *ngIf="cot.items.length === 0" class="italic text-gray-400">Cotización general</span>
+            </td>
+            <td class="p-4 font-semibold text-gray-800">
+              {{ cot.total | currency:'MXN' }}
+            </td>
+            <td class="p-4">
+              <span [ngClass]="claseBadgeEstado(cot.estado_pedido)" class="px-2.5 py-1 rounded-full text-[11px] font-medium">
+                {{ cot.estado_pedido }}
+              </span>
+            </td>
+            <td class="p-4 text-right">
+              <div class="flex justify-end gap-2">
+                <button (click)="verDetalle(cot)" class="px-2.5 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 cursor-pointer">
+                  Ver
+                </button>
+                <button *ngIf="cot.estado_pedido === 'Cotizacion'" (click)="aprobarCotizacion(cot)"
+                        class="px-2.5 py-1 text-xs bg-emerald-600 text-white rounded-md hover:bg-emerald-700 cursor-pointer">
+                  Aprobar
+                </button>
+                <button *ngIf="cot.estado_pedido === 'Cotizacion'" (click)="eliminarCotizacion(cot)"
+                        class="px-2.5 py-1 text-xs bg-red-50 text-red-700 border border-red-200 rounded-md hover:bg-red-100 cursor-pointer">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="cotizacionesFiltradas.length === 0" class="p-8 text-center text-sm text-gray-400">
+        No se encontraron cotizaciones con esos filtros.
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL 1: NUEVA COTIZACIÓN -->
+  <div *ngIf="modalNuevaAbierto" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-xl p-6 w-full max-w-xl shadow-xl border border-gray-100 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-serif text-[#6b1d24]">Generar Nueva Cotización</h3>
+        <button (click)="modalNuevaAbierto = false" class="text-gray-400 hover:text-gray-700 text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Cliente *</label>
+            <select [(ngModel)]="nuevaCotizacion.id_cliente" class="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-[#6b1d24]">
+              <option *ngFor="let cl of clientes" [ngValue]="cl.id_usuario">{{ cl.nombre }} ({{ cl.email }})</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Vendedor Responsable</label>
+            <select [(ngModel)]="nuevaCotizacion.id_vendedor" class="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-[#6b1d24]">
+              <option *ngFor="let v of vendedores" [ngValue]="v.id_usuario">{{ v.nombre }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bg-[#fcfbfa] p-4 rounded-xl border border-gray-200 space-y-3">
+          <span class="text-xs font-semibold text-gray-700 block">Agregar Muebles al Presupuesto</span>
+          <div class="flex gap-2">
+            <select [(ngModel)]="productoSeleccionadoId" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg bg-white text-xs focus:outline-none focus:border-[#6b1d24]">
+              <option *ngFor="let p of productos" [ngValue]="p.id_producto">
+                {{ p.nombre }} — {{ p.precio_venta | currency:'MXN' }}
+              </option>
+            </select>
+            <input type="number" min="1" [(ngModel)]="cantidadSeleccionada"
+                   class="w-20 px-3 py-2 border border-gray-200 rounded-lg text-center text-xs bg-white">
+            <button type="button" (click)="agregarProductoACotizacion()"
+                    class="px-3 py-2 bg-[#6b1d24] text-white text-xs rounded-lg hover:bg-[#5b191e] cursor-pointer">
+              + Agregar
+            </button>
+          </div>
+
+          <div *ngIf="itemsNuevaCotizacion.length > 0" class="divide-y divide-gray-200 pt-2">
+            <div *ngFor="let it of itemsNuevaCotizacion; let idx = index" class="py-2 flex justify-between items-center text-xs">
+              <div>
+                <strong class="text-gray-800">{{ it.cantidad }}x {{ it.nombre }}</strong>
+                <span class="block text-gray-400">{{ it.precio_venta | currency:'MXN' }} c/u</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <strong class="text-gray-800">{{ it.subtotal | currency:'MXN' }}</strong>
+                <button type="button" (click)="quitarProducto(idx)" class="text-red-500 hover:text-red-700 cursor-pointer">✕</button>
+              </div>
+            </div>
+          </div>
+          <p *ngIf="itemsNuevaCotizacion.length === 0" class="text-xs text-gray-400 text-center py-2">
+            Aún no has agregado muebles a esta cotización.
+          </p>
+        </div>
+
+        <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+          <span class="text-xs uppercase tracking-widest text-gray-500">Total Estimado</span>
+          <strong class="text-2xl text-[#6b1d24] font-serif">{{ totalNuevaCotizacion | currency:'MXN' }}</strong>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="modalNuevaAbierto = false" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer">Cancelar</button>
+        <button (click)="guardarCotizacion()" class="px-4 py-2 text-sm bg-[#6b1d24] text-white rounded-lg hover:bg-[#5b191e] cursor-pointer">
+          Guardar Cotización
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: DETALLE DE COTIZACIÓN -->
+  <div *ngIf="modalDetalleAbierto && cotizacionSeleccionada" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl border border-gray-100">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-serif text-[#6b1d24]">Detalle Folio #{{ cotizacionSeleccionada.id_pedido }}</h3>
+        <button (click)="modalDetalleAbierto = false" class="text-gray-400 hover:text-gray-700 text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <div class="bg-[#fcfbfa] p-3 rounded-lg border border-gray-100 text-xs space-y-1">
+          <p><strong>Cliente:</strong> {{ cotizacionSeleccionada.cliente_nombre }} ({{ cotizacionSeleccionada.cliente_telefono }})</p>
+          <p><strong>Dirección:</strong> {{ cotizacionSeleccionada.cliente_direccion }}</p>
+          <p><strong>Vendedor:</strong> {{ cotizacionSeleccionada.vendedor_nombre }}</p>
+          <p><strong>Tiempo estimado de taller:</strong> {{ cotizacionSeleccionada.horas_estimadas }} hrs</p>
+        </div>
+
+        <div class="divide-y divide-gray-100">
+          <div *ngFor="let it of cotizacionSeleccionada.items" class="py-2 flex justify-between text-xs">
+            <span>{{ it.cantidad }}x {{ it.producto_nombre }} ({{ it.fase_kanban }})</span>
+            <strong>{{ it.subtotal | currency:'MXN' }}</strong>
+          </div>
+          <div *ngIf="cotizacionSeleccionada.items.length === 0" class="py-3 text-xs text-gray-400 text-center">
+            Este folio proviene de los datos semilla sin partidas individuales registradas.
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+          <span class="text-xs uppercase tracking-widest text-gray-500">Total</span>
+          <strong class="text-xl text-[#6b1d24]">{{ cotizacionSeleccionada.total | currency:'MXN' }}</strong>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="modalDetalleAbierto = false" class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 cursor-pointer">Cerrar</button>
+        <button *ngIf="cotizacionSeleccionada.estado_pedido === 'Cotizacion'" (click)="aprobarCotizacion(cotizacionSeleccionada)"
+                class="px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 cursor-pointer">
+          Aprobar y Convertir a Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

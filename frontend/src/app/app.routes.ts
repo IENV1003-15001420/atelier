@@ -5,6 +5,9 @@ import { UsuariosComponent } from './usuarios/usuarios';
 import { AlmacenComponent } from './almacen/almacen';
 import { ComprasComponent } from './compras/compras';
 import { EcommerceComponent } from './ecommerce/ecommerce';
+import { Cotizaciones } from './cotizaciones/cotizaciones';
+import { Logistica } from './logistica/logistica';
+import { Resenas } from './resenas/resenas';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Mantiene el flujo inicial
@@ -15,5 +18,8 @@ export const routes: Routes = [
   { path: 'compras', component: ComprasComponent },
   // La tienda es pública (PWA cliente); el checkout usa la cuenta cliente demo si no hay sesión.
   { path: 'ecommerce', component: EcommerceComponent },
+  { path: 'cotizaciones', component: Cotizaciones },
+  { path: 'logistica', component: Logistica },
+  { path: 'resenas', component: Resenas },
   { path: '**', redirectTo: 'login' }
 ];

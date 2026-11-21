@@ -3,7 +3,7 @@
   <!-- BARRA LATERAL (SIDEBAR) DINÁMICA CON LOGO -->
   <aside 
     [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'" 
-    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-hidden">
+    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-y-auto">
     
     <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
       <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
@@ -32,8 +32,9 @@
       <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Pintura">
         <span class="text-lg">🖌️</span> <span *ngIf="sidebarAbierta">Pintura y Acabados</span>
       </a>
-      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Instalaciones">
-        <span class="text-lg">🛠️</span> <span *ngIf="sidebarAbierta">Instalaciones con Cliente</span>
+      <a routerLink="/logistica" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Logística e Instalaciones">
+        <span class="text-lg">🚚</span> <span *ngIf="sidebarAbierta">Logística e Instalaciones</span>
       </a>
     </div>
 
@@ -53,9 +54,17 @@
     <!-- Menú 3b: Comercio Digital -->
     <div class="mb-6">
       <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">COMERCIO DIGITAL</span>
+      <a routerLink="/cotizaciones" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Cotizaciones CRM">
+        <span class="text-lg">📝</span> <span *ngIf="sidebarAbierta">Cotizaciones CRM</span>
+      </a>
       <a routerLink="/ecommerce" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
          class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Tienda en línea">
         <span class="text-lg">🛒</span> <span *ngIf="sidebarAbierta">Tienda en Línea</span>
+      </a>
+      <a routerLink="/resenas" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Reseñas y Encuestas">
+        <span class="text-lg">⭐</span> <span *ngIf="sidebarAbierta">Reseñas y Encuestas</span>
       </a>
     </div>
 
