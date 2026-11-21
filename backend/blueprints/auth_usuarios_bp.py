@@ -1,0 +1,209 @@
+from flask import Blueprint, request, jsonify
+import mysql.connector
+
+
+def crear_blueprint_auth_usuarios(conectar_db):
+    auth_bp = Blueprint('auth_usuarios', __name__)
+
+    @auth_bp.route('/api/auth/login', methods=['POST'])
+    def login():
+        data = request.get_json(silent=True) or {}
+        email = data.get('email')
+        password = data.get('password')
+
+        conn = None
+        cursor = None
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor(dictionary=True)
+
+            query = """
+                SELECT u.id_usuario, u.nombre, u.email, u.id_rol, r.nombre_rol
+                FROM usuarios u
+                JOIN roles r ON u.id_rol = r.id_rol
+                WHERE u.email = %s AND u.password_hash = %s AND u.activo = 1
+            """
+            cursor.execute(query, (email, password))
+            usuario = cursor.fetchone()
+
+            if usuario:
+                return jsonify({'success': True, 'usuario': usuario}), 200
+            return jsonify({'success': False, 'message': 'Credenciales inválidas o usuario inactivo'}), 401
+        except Exception as e:
+            return jsonify({'success': False, 'message': str(e)}), 500
+        finally:
+            if cursor: cursor.close()
+            if conn and conn.is_connected(): conn.close()
+
+    @auth_bp.route('/api/auth/registro', methods=['POST'])
+    def registrar_cliente():
+        data = request.get_json(silent=True) or {}
+        nombre = (data.get('nombre') or '').strip()
+        email = (data.get('email') or '').strip().lower()
+        password = (data.get('password') or '').strip()
+        telefono = (data.get('telefono') or '').strip()
+        direccion = (data.get('direccion') or '').strip()
+
+        if not nombre or not email or not password:
+            return jsonify({'success': False, 'message': 'Nombre, correo y contraseña obligatorios.'}), 400
+
+        conn = None
+        cursor = None
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor(dictionary=True)
+
+            cursor.execute("SELECT id_usuario FROM usuarios WHERE email = %s", (email,))
+            if cursor.fetchone():
+                return jsonify({'success': False, 'message': 'Ese correo ya está registrado.'}), 409
+
+            cursor.execute("""
+                INSERT INTO usuarios (nombre, email, password_hash, telefono, direccion, id_rol, activo, fecha_registro)
+                VALUES (%s, %s, %s, %s, %s, 5, 1, NOW())
+            """, (nombre, email, password, telefono or None, direccion or None))
+            conn.commit()
+
+            return jsonify({
+                'success': True,
+                'usuario': {
+                    'id_usuario': cursor.lastrowid,
+                    'nombre': nombre,
+                    'email': email,
+                    'id_rol': 5,
+                    'nombre_rol': 'Cliente'
+                }
+            }), 201
+        except Exception as e:
+            if conn: conn.rollback()
+            return jsonify({'success': False, 'message': str(e)}), 500
+        finally:
+            if cursor: cursor.close()
+            if conn and conn.is_connected(): conn.close()
+
+    @auth_bp.route('/api/dashboard', methods=['GET'])
+    def get_dashboard_data():
+        conn = None
+        cursor = None
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor(dictionary=True)
+
+            cursor.execute("""
+                SELECT SUM(total) AS ventas_mes
+                FROM pedidos
+                WHERE MONTH(fecha_pedido) = MONTH(CURRENT_DATE())
+                AND YEAR(fecha_pedido) = YEAR(CURRENT_DATE())
+            """)
+            venta_mes = cursor.fetchone()
+            total_ventas = venta_mes['ventas_mes'] if venta_mes['ventas_mes'] else 0
+
+            cursor.execute("SELECT COUNT(*) AS activos FROM pedidos WHERE estado_pedido = 'En Produccion'")
+            proyectos = cursor.fetchone()
+            total_proyectos = proyectos['activos'] if proyectos else 0
+
+            meses = ['Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr']
+            ventas_grafica = [15000, 17500, 16000, 19000, 18000, float(total_ventas)]
+            gastos_grafica = [8000, 9000, 8500, 9500, 8800, 9200]
+
+            return jsonify({
+                'success': True,
+                'ventas_mes': total_ventas,
+                'proyectos_activos': total_proyectos,
+                'alertas_stock': 3,
+                'grafica': {
+                    'meses': meses,
+                    'ventas': ventas_grafica,
+                    'gastos': gastos_grafica
+                }
+            })
+        except Exception as e:
+            return jsonify({'success': False, 'message': str(e)}), 500
+        finally:
+            if cursor: cursor.close()
+            if conn and conn.is_connected(): conn.close()
+
+    @auth_bp.route('/api/usuarios', methods=['GET'])
+    def obtener_usuarios():
+        conn = None
+        cursor = None
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor(dictionary=True)
+
+            cursor.execute("""
+                SELECT u.id_usuario, u.nombre, u.email, u.telefono, u.direccion, u.activo, u.fecha_registro, r.nombre_rol
+                FROM usuarios u
+                LEFT JOIN roles r ON u.id_rol = r.id_rol
+                ORDER BY u.id_usuario ASC
+            """)
+            datos = cursor.fetchall()
+
+            lista_usuarios = []
+            colores = ['bg-[#6b1d24]', 'bg-[#5c4938]', 'bg-[#d8e8f8]', 'bg-gray-200', 'bg-[#e2b887]', 'bg-[#f0b4b8]']
+
+            for index, fila in enumerate(datos):
+                nombre = fila['nombre'] or 'Sin Nombre'
+                partes = nombre.split()
+                iniciales = (partes[0][0] + (partes[1][0] if len(partes) > 1 else '')).upper()
+
+                color_bg = colores[index % len(colores)]
+                color_texto = 'text-white' if color_bg in ['bg-[#6b1d24]', 'bg-[#5c4938]'] else 'text-gray-800'
+                es_activo = (fila['activo'] == 1)
+
+                lista_usuarios.append({
+                    'id': fila['id_usuario'],
+                    'iniciales': iniciales,
+                    'colorBg': color_bg,
+                    'colorTexto': color_texto,
+                    'nombre': nombre,
+                    'correo': fila['email'],
+                    'rolPrincipal': (fila['nombre_rol'] or 'PERSONAL').upper(),
+                    'rolSecundario': f"ID Empleado #{fila['id_usuario']}",
+                    'estacion': fila['direccion'] or 'Taller Central',
+                    'estacionSub': 'Sede León, Gto.',
+                    'acceso': f"Tel: {fila['telefono']}" if fila['telefono'] else 'Sin teléfono',
+                    'accesoSub': f"Reg: {str(fila['fecha_registro'])[:10]}",
+                    'estado': 'ACTIVO' if es_activo else 'OFFLINE',
+                    'colorEstado': 'text-emerald-500' if es_activo else 'text-gray-400'
+                })
+
+            return jsonify({'success': True, 'usuarios': lista_usuarios})
+        except Exception as e:
+            return jsonify({'success': False, 'message': str(e)}), 500
+        finally:
+            if cursor: cursor.close()
+            if conn and conn.is_connected(): conn.close()
+
+    @auth_bp.route('/api/usuarios', methods=['POST'])
+    def crear_usuario():
+        data = request.get_json(silent=True) or {}
+        conn = None
+        cursor = None
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                INSERT INTO usuarios (nombre, email, password_hash, telefono, direccion, id_rol, activo, fecha_registro)
+                VALUES (%s, %s, %s, %s, %s, %s, 1, NOW())
+            """, (
+                data.get('nombre'),
+                data.get('email'),
+                data.get('password', '123456'),
+                data.get('telefono'),
+                data.get('direccion'),
+                data.get('id_rol')
+            ))
+            conn.commit()
+            return jsonify({'success': True, 'mensaje': 'Usuario registrado correctamente'}), 201
+        except mysql.connector.Error as err:
+            if err.errno == 1062:
+                return jsonify({'success': False, 'mensaje': 'Ese correo electrónico ya está registrado en el sistema.'}), 400
+            return jsonify({'success': False, 'mensaje': str(err)}), 500
+        except Exception as e:
+            return jsonify({'success': False, 'mensaje': str(e)}), 500
+        finally:
+            if cursor: cursor.close()
+            if conn and conn.is_connected(): conn.close()
+
+    return auth_bp

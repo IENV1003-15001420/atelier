@@ -1,87 +1,11 @@
 <div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
-  
-  <!-- BARRA LATERAL (SIDEBAR) DINÁMICA CON LOGO -->
-  <aside 
-    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'" 
-    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-y-auto">
-    
-    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
-      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
-      <div *ngIf="sidebarAbierta">
-        <h2 class="text-[#6b1d24] font-serif text-2xl m-0 leading-none">Atelier</h2>
-        <span class="text-[10px] text-gray-500 tracking-widest">CARPINTERÍA DIGITAL</span>
-      </div>
-    </div>
 
-    <!-- Menú 1: Visión General -->
-    <div class="mb-6">
-      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
-      <a routerLink="/dashboard" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
-         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Panel de Control">
-        <span class="text-lg">📊</span> 
-        <span *ngIf="sidebarAbierta">Panel de Control</span>
-      </a>
-    </div>
-
-    <!-- Menú 2: Taller y Producción -->
-    <div class="mb-6">
-      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">TALLER Y PRODUCCIÓN</span>
-      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Armado">
-        <span class="text-lg">📐</span> <span *ngIf="sidebarAbierta">Armado y Fabricación</span>
-      </a>
-      <a href="javascript:void(0)" class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Pintura">
-        <span class="text-lg">🖌️</span> <span *ngIf="sidebarAbierta">Pintura y Acabados</span>
-      </a>
-      <a routerLink="/logistica" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Logística e Instalaciones">
-        <span class="text-lg">🚚</span> <span *ngIf="sidebarAbierta">Logística e Instalaciones</span>
-      </a>
-    </div>
-
-    <!-- Menú 3: Inventario y Materiales -->
-    <div class="mb-6">
-      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y MATERIALES</span>
-      <a routerLink="/compras" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Compras">
-        <span class="text-lg">📦</span> <span *ngIf="sidebarAbierta">Compras Generales</span>
-      </a>
-      <a routerLink="/almacen" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Almacén">
-        <span class="text-lg">🪵</span> <span *ngIf="sidebarAbierta">Almacén e Inventarios</span>
-      </a>
-    </div>
-
-    <!-- Menú 3b: Comercio Digital -->
-    <div class="mb-6">
-      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">COMERCIO DIGITAL</span>
-      <a routerLink="/cotizaciones" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Cotizaciones CRM">
-        <span class="text-lg">📝</span> <span *ngIf="sidebarAbierta">Cotizaciones CRM</span>
-      </a>
-      <a routerLink="/ecommerce" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Tienda en línea">
-        <span class="text-lg">🛒</span> <span *ngIf="sidebarAbierta">Tienda en Línea</span>
-      </a>
-      <a routerLink="/resenas" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
-         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Reseñas y Encuestas">
-        <span class="text-lg">⭐</span> <span *ngIf="sidebarAbierta">Reseñas y Encuestas</span>
-      </a>
-    </div>
-
-    <!-- Menú 4: Administración -->
-    <div class="mb-6">
-      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
-      <a routerLink="/usuarios" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}" 
-         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors" title="Gestión de Usuarios">
-        <span class="text-lg">🫂</span> 
-        <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
-      </a>
-    </div>
-  </aside>
+  <!-- BARRA LATERAL DINÁMICA POR ROL -->
+  <app-sidebar [abierta]="sidebarAbierta"></app-sidebar>
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
-    
+
     <!-- Encabezado superior -->
     <header class="flex justify-between items-center mb-8">
       <div class="flex items-center gap-4">
@@ -94,11 +18,11 @@
       </div>
       <div class="flex items-center gap-4">
         <div class="text-right leading-tight">
-          <strong class="block text-sm text-gray-800">{{ usuario?.nombre || 'Liz Ponce' }}</strong>
-          <span class="text-[11px] text-gray-500">{{ usuario?.nombre_rol || 'Analista de Datos' }}</span>
+          <strong class="block text-sm text-gray-800">{{ usuario?.nombre || 'Administrador' }}</strong>
+          <span class="text-[11px] text-gray-500">{{ usuario?.nombre_rol || 'Administrador' }}</span>
         </div>
         <div class="w-10 h-10 bg-[#5c4938] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">
-          LP
+          {{ (usuario?.nombre || 'AD').slice(0, 2).toUpperCase() }}
         </div>
         <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
       </div>
@@ -129,15 +53,14 @@
 
     <!-- Sección Inferior: Embudo y Colores -->
     <div class="grid grid-cols-2 gap-6">
-      
-      <!-- Widget: Proceso de Ventas Actualizado -->
+
       <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col">
         <div class="flex justify-between text-[10px] mb-2">
           <span class="uppercase tracking-wide text-[#b89b82]">VENTAS POR INTERNET</span>
           <span class="text-[#4a5568] font-medium">Cierres de Venta: 14.8%</span>
         </div>
         <h4 class="text-lg text-gray-800 mb-4">Proceso de Ventas a Medida</h4>
-        
+
         <div class="flex justify-between py-3 border-b border-gray-100 text-sm text-gray-600">
           <span>Personas viendo el Catálogo</span>
           <strong class="text-gray-900">4,120</strong>
@@ -155,17 +78,15 @@
           <strong class="text-[#5b1e24]">91 <span class="text-[#7a484c] text-xs font-normal">(2.2%)</span></strong>
         </div>
 
-        <!-- Banner de Clientes Esperando -->
         <div class="mt-4 bg-[#f8f5f4] rounded-md p-3 flex justify-between items-center text-sm">
           <span class="text-gray-700 flex items-center gap-2">
             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
             8 Clientes Esperando Respuesta
           </span>
-          <a href="javascript:void(0)" class="text-[#5b1e24] font-semibold text-xs hover:underline">Ir a Mensajes</a>
+          <a routerLink="/cotizaciones" class="text-[#5b1e24] font-semibold text-xs hover:underline">Ir a Cotizaciones</a>
         </div>
       </div>
 
-      <!-- Widget: Colores Más Solicitados -->
       <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
         <div class="flex justify-between text-[10px] text-gray-400 mb-2">
           <span class="uppercase tracking-wide">Catálogo de Colores</span>

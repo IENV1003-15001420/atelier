@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-logistica',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
-  templateUrl: './logistica.html',
-  styleUrl: './logistica.css'
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, SidebarComponent],
+  templateUrl: './logistica.html'
 })
 export class Logistica implements OnInit {
   private apiUrl = 'http://localhost:5000/api/logistica';

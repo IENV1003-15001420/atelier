@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-cotizaciones',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
-  templateUrl: './cotizaciones.html',
-  styleUrl: './cotizaciones.css'
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, SidebarComponent],
+  templateUrl: './cotizaciones.html'
 })
 export class Cotizaciones implements OnInit {
   private apiUrl = 'http://localhost:5000/api/cotizaciones';

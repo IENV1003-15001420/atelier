@@ -1,0 +1,86 @@
+<div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
+  <app-sidebar [abierta]="sidebarAbierta"></app-sidebar>
+
+  <main class="flex-1 p-8 overflow-y-auto">
+    <header class="flex justify-between items-center mb-8">
+      <button (click)="sidebarAbierta = !sidebarAbierta" class="text-2xl text-gray-500 hover:text-[#6b1d24]">☰</button>
+      <div class="flex items-center gap-4">
+        <strong class="text-sm">{{ usuarioLogueado?.nombre }}</strong>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <div class="mb-6">
+      <span class="uppercase tracking-widest text-[10px] text-gray-500">TALLER • TABLERO KANBAN</span>
+      <h1 class="text-3xl text-[#6b1d24] font-serif mt-1">Armado y Fabricación en Carpintería</h1>
+    </div>
+
+    <div *ngIf="mensajeAlerta" class="mb-4 px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex justify-between">
+      <span>{{ mensajeAlerta }}</span>
+      <button (click)="mensajeAlerta = ''" class="text-xs underline">Cerrar</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- COLUMNA 1: PENDIENTE -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b">
+          <h3 class="font-semibold text-gray-700">1. En Cola / Pendiente</h3>
+          <span class="px-2.5 py-0.5 text-xs rounded-full bg-amber-100 text-amber-800 font-bold">{{ pendientes.length }}</span>
+        </div>
+        <div *ngFor="let o of pendientes" class="p-4 mb-3 rounded-xl bg-[#fcfbfa] border border-gray-200 space-y-3">
+          <div class="flex justify-between">
+            <strong class="text-sm text-[#6b1d24]">OT #{{ o.id_detalle }} • {{ o.producto_nombre }} (x{{ o.cantidad }})</strong>
+            <span class="text-xs text-gray-500">Pedido #{{ o.id_pedido }}</span>
+          </div>
+          <p class="text-xs text-gray-500">Cliente: {{ o.cliente_nombre }} • Est: {{ o.tiempo_estimado_horas }}h</p>
+          <div>
+            <label class="block text-[11px] text-gray-500 mb-1">Asignar Carpintero:</label>
+            <select [(ngModel)]="o.id_operario_asignado" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs bg-white">
+              <option [ngValue]="null">-- Seleccionar carpintero --</option>
+              <option *ngFor="let c of carpinteros" [ngValue]="c.id_usuario">{{ c.nombre }}</option>
+            </select>
+          </div>
+          <button (click)="actualizarOrden(o, 'Corte y Armado')" class="w-full py-2 bg-[#6b1d24] text-white text-xs rounded-lg hover:bg-[#5b191e] cursor-pointer">
+            Iniciar Corte y Armado →
+          </button>
+        </div>
+        <p *ngIf="pendientes.length === 0" class="text-xs text-gray-400 text-center py-6">No hay órdenes pendientes de corte.</p>
+      </div>
+
+      <!-- COLUMNA 2: CORTE Y ARMADO -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b">
+          <h3 class="font-semibold text-gray-700">2. En Corte y Armado</h3>
+          <span class="px-2.5 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800 font-bold">{{ enArmado.length }}</span>
+        </div>
+        <div *ngFor="let o of enArmado" class="p-4 mb-3 rounded-xl bg-[#fcfbfa] border border-gray-200 space-y-3">
+          <div class="flex justify-between">
+            <strong class="text-sm text-gray-800">OT #{{ o.id_detalle }} • {{ o.producto_nombre }} (x{{ o.cantidad }})</strong>
+            <span class="text-xs text-blue-700 font-medium">{{ o.operario_nombre }}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-gray-500 mb-1">Carpintero:</label>
+              <select [(ngModel)]="o.id_operario_asignado" class="w-full px-2 py-1.5 border border-gray-200 rounded-lg text-xs bg-white">
+                <option *ngFor="let c of carpinteros" [ngValue]="c.id_usuario">{{ c.nombre }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-500 mb-1">Horas invertidas:</label>
+              <input type="number" step="0.5" [(ngModel)]="o.horas_invertidas" class="w-full px-2 py-1.5 border border-gray-200 rounded-lg text-xs bg-white">
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button (click)="actualizarOrden(o, 'Corte y Armado')" class="flex-1 py-2 bg-gray-100 text-gray-700 text-xs rounded-lg hover:bg-gray-200 cursor-pointer">
+              Guardar Horas
+            </button>
+            <button (click)="actualizarOrden(o, 'Barnizado y Secado')" class="flex-1 py-2 bg-emerald-700 text-white text-xs rounded-lg hover:bg-emerald-800 cursor-pointer">
+              Pasar a Pintura →
+            </button>
+          </div>
+        </div>
+        <p *ngIf="enArmado.length === 0" class="text-xs text-gray-400 text-center py-6">No hay muebles en armado actualmente.</p>
+      </div>
+    </div>
+  </main>
+</div>

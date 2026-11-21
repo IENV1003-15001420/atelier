@@ -3,24 +3,23 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import Chart from 'chart.js/auto';
+import { SidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, HttpClientModule, RouterModule, SidebarComponent],
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('graficaVentas') graficaCanvas!: ElementRef;
   chart: any;
   usuario: any = null;
-  
-  // Variables de datos
+
   ventasMes: number = 0;
   proyectosActivos: number = 0;
   alertasStock: number = 0;
 
-  // Variable para controlar la barra lateral
   sidebarAbierta: boolean = true;
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -35,10 +34,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // Función para abrir/cerrar la barra lateral
   toggleSidebar() {
     this.sidebarAbierta = !this.sidebarAbierta;
-    // Redibujar la gráfica un instante después de la animación para que se ajuste al nuevo ancho
     setTimeout(() => {
       if (this.chart) this.chart.resize();
     }, 300);
@@ -52,7 +49,6 @@ export class DashboardComponent implements OnInit {
           this.proyectosActivos = res.proyectos_activos;
           this.alertasStock = res.alertas_stock;
 
-          // Damos un pequeño respiro a Angular para que renderice el canvas antes de dibujar
           setTimeout(() => {
             this.renderizarGrafica(res.grafica.meses, res.grafica.ventas, res.grafica.gastos);
           }, 100);

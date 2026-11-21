@@ -1,25 +1,33 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // Importamos Router por si quieres redirigir después
-import { AuthService } from '../../services/auth'; // Conecta con tu servicio
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './login.html',
-  styleUrl: './login.css'
+  templateUrl: './login.html'
 })
 export class LoginComponent {
-  // Variables para guardar lo que el usuario escriba
+  modo: 'login' | 'registro' = 'login';
   correo = '';
   contrasena = '';
   mensajeError = '';
+  cargando = false;
+
+  registro = {
+    nombre: '',
+    email: '',
+    password: '',
+    telefono: '',
+    direccion: ''
+  };
 
   constructor(
     private authService: AuthService,
-    private router: Router // Inyectamos el Router
+    private router: Router
   ) {}
 
   iniciarSesion() {
@@ -30,24 +38,43 @@ export class LoginComponent {
       return;
     }
 
-    // Enviamos los datos a Flask
+    this.cargando = true;
     this.authService.login(this.correo, this.contrasena).subscribe({
       next: (respuesta: any) => {
-        console.log('Respuesta del servidor:', respuesta);
-        
-        if (respuesta.success) {
-          // Guardamos la información del usuario en el navegador
-          localStorage.setItem('usuario_atelier', JSON.stringify(respuesta.usuario));
-          
-          alert('¡Acceso concedido! Bienvenido a Atelier.');
-
-          
-           this.router.navigate(['/dashboard']);
+        this.cargando = false;
+        if (respuesta.success && respuesta.usuario) {
+          this.authService.guardarSesion(respuesta.usuario);
+          const destino = this.authService.obtenerRutaInicio(respuesta.usuario.id_rol);
+          this.router.navigate([destino]);
         }
       },
-      error: (error) => {
-        console.error('Error:', error);
+      error: () => {
+        this.cargando = false;
         this.mensajeError = 'Credenciales inválidas o usuario inactivo.';
+      }
+    });
+  }
+
+  registrarCliente() {
+    this.mensajeError = '';
+
+    if (!this.registro.nombre || !this.registro.email || !this.registro.password) {
+      this.mensajeError = 'Completa tu nombre, correo y contraseña.';
+      return;
+    }
+
+    this.cargando = true;
+    this.authService.registrarCliente(this.registro).subscribe({
+      next: (respuesta: any) => {
+        this.cargando = false;
+        if (respuesta.success && respuesta.usuario) {
+          this.authService.guardarSesion(respuesta.usuario);
+          this.router.navigate(['/ecommerce']);
+        }
+      },
+      error: (err) => {
+        this.cargando = false;
+        this.mensajeError = err.error?.message || 'No se pudo crear la cuenta.';
       }
     });
   }
