@@ -100,6 +100,12 @@ export class EcommerceComponent implements OnInit, OnDestroy {
     }
   }
 
+  cerrarSesion(): void {
+    localStorage.removeItem('usuario_atelier');
+    this.usuario = null;
+    window.location.href = '/login';
+  }
+
   refrescarVista(): void {
     this.cdr.detectChanges();
   }

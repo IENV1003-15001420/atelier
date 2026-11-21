@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
+import { SidebarComponent } from '../shared/sidebar/sidebar';
 
 interface Material {
   id_material: number;
@@ -36,7 +37,7 @@ interface Movimiento {
 @Component({
   selector: 'app-almacen',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SidebarComponent],
   templateUrl: './almacen.html'
 })
 export class AlmacenComponent implements OnInit {

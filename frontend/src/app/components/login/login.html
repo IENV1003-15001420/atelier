@@ -1,35 +1,32 @@
 <div class="min-h-screen bg-[#fcf9f8] flex flex-col items-center justify-center p-6 font-sans">
-  
+
   <!-- Header Principal -->
   <div class="text-center mb-10 flex flex-col items-center">
     <img src="/logo_atelier.png" alt="Logotipo Atelier" class="h-20 mb-2 object-contain">
-    <p class="text-xs text-[#d4c3c0] tracking-[0.25em] font-medium">CARPINTERÍA DIGITAL &bull; ACCESO ADMINISTRATIVO</p>
+    <p class="text-xs text-[#d4c3c0] tracking-[0.25em] font-medium">CARPINTERÍA DIGITAL &bull; ACCESO AL SISTEMA</p>
   </div>
 
   <!-- Contenedor Principal (Tarjeta Dividida) -->
   <div class="max-w-5xl w-full bg-white rounded-2xl shadow-xl flex flex-col md:flex-row overflow-hidden min-h-[500px]">
-    
+
     <!-- Lado Izquierdo (Marrón/Vino) -->
     <div class="bg-[#631c24] text-white p-12 md:w-5/12 flex flex-col justify-between relative">
       <div>
-        <!-- Etiqueta Taller Central -->
         <span class="inline-flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full text-[10px] tracking-widest font-medium mb-16">
           <svg class="w-3 h-3 text-[#d2a3a9]" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"></path></svg>
           TALLER CENTRAL ACTIVO
         </span>
-        
-        <!-- Título principal -->
+
         <h2 class="text-[2.75rem] font-serif leading-tight mb-6">
           El Arte de la <br>
           <span class="italic font-light text-[#e8d5d7]">Madera</span>
         </h2>
-        
+
         <p class="text-white/70 text-sm leading-relaxed max-w-[280px]">
           Control de producción, gestión de clientes, inventario y seguimiento de proyectos a medida.
         </p>
       </div>
 
-      <!-- Footer lado izquierdo -->
       <div class="flex justify-between items-center text-[10px] text-white/50 tracking-wider">
         <div class="flex items-center gap-2">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> SISTEMA EN LÍNEA
@@ -38,68 +35,88 @@
       </div>
     </div>
 
-    <!-- Lado Derecho (Formulario) -->
-    <div class="p-12 md:w-7/12 flex flex-col relative bg-white">
-      
-      <!-- Etiqueta Acceso de Administrador -->
-      <div class="absolute top-10 right-12">
-        <span class="inline-flex items-center gap-2 bg-gray-50 text-gray-500 px-4 py-2 rounded-full text-xs font-medium border border-gray-100">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          Acceso de Administrador
-        </span>
-      </div>
-      
-      <div class="mt-14 mb-8">
-        <h3 class="text-2xl font-serif text-gray-900 mb-2 flex items-center gap-3">
-          <svg class="w-6 h-6 text-[#631c24]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+    <!-- Lado Derecho (Formulario Login / Registro) -->
+    <div class="p-10 md:p-12 md:w-7/12 flex flex-col justify-center bg-white">
+
+      <!-- Selector de Modo -->
+      <div class="flex gap-2 mb-6 border-b border-gray-100 pb-4">
+        <button type="button" (click)="modo = 'login'; mensajeError = ''"
+                [ngClass]="modo === 'login' ? 'bg-[#631c24] text-white shadow-sm' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+                class="px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
           Iniciar Sesión
-        </h3>
-        <p class="text-gray-500 text-sm">Ingresa tus credenciales para acceder al sistema</p>
+        </button>
+        <button type="button" (click)="modo = 'registro'; mensajeError = ''"
+                [ngClass]="modo === 'registro' ? 'bg-[#631c24] text-white shadow-sm' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+                class="px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer">
+          Crear Cuenta de Cliente
+        </button>
       </div>
 
-      <form class="space-y-6 w-full max-w-md">
-        
-        <!-- Mensaje de Error Dinámico -->
-        <div *ngIf="mensajeError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-xs">
-          {{ mensajeError }}
+      <!-- Mensaje de Error Dinámico -->
+      <div *ngIf="mensajeError" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-xs">
+        {{ mensajeError }}
+      </div>
+
+      <!-- FORMULARIO INICIAR SESIÓN -->
+      <form *ngIf="modo === 'login'" (ngSubmit)="iniciarSesion()" class="space-y-5 w-full max-w-md">
+        <div>
+          <h3 class="text-2xl font-serif text-gray-900 mb-1">Bienvenido a Atelier</h3>
+          <p class="text-gray-500 text-xs">Ingresa con tu cuenta de taller o de cliente</p>
         </div>
 
-        <!-- Correo Electrónico -->
         <div>
           <label class="block text-[10px] font-bold text-gray-400 tracking-wider mb-2">CORREO ELECTRÓNICO</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-            </div>
-            <input type="email" name="correo" [(ngModel)]="correo" class="w-full pl-11 pr-4 py-3 bg-[#f8f5f4] border border-transparent rounded-lg text-sm text-gray-700 focus:border-[#631c24] focus:bg-white focus:ring-0 outline-none transition-all" placeholder="usuario@ejemplo.com">
-          </div>
+          <input type="email" name="correo" [(ngModel)]="correo"
+                 class="w-full px-4 py-3 bg-[#f8f5f4] border border-transparent rounded-lg text-sm text-gray-700 focus:border-[#631c24] focus:bg-white outline-none transition-all"
+                 placeholder="usuario@ejemplo.com">
         </div>
 
-        <!-- Contraseña -->
         <div>
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-[10px] font-bold text-gray-400 tracking-wider">CONTRASEÑA</label>
-            <a href="#" class="text-[11px] text-gray-400 hover:text-[#631c24] transition-colors">¿Olvidaste tu contraseña?</a>
-          </div>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-            </div>
-            <input type="password" name="contrasena" [(ngModel)]="contrasena" class="w-full pl-11 pr-11 py-3 bg-[#f8f5f4] border border-transparent rounded-lg text-sm text-gray-700 focus:border-[#631c24] focus:bg-white focus:ring-0 outline-none transition-all" placeholder="........">
-          </div>
+          <label class="block text-[10px] font-bold text-gray-400 tracking-wider mb-2">CONTRASEÑA</label>
+          <input type="password" name="contrasena" [(ngModel)]="contrasena"
+                 class="w-full px-4 py-3 bg-[#f8f5f4] border border-transparent rounded-lg text-sm text-gray-700 focus:border-[#631c24] focus:bg-white outline-none transition-all"
+                 placeholder="••••••••">
         </div>
 
-        <!-- Botón de Entrada -->
-        <button type="button" (click)="iniciarSesion()" class="w-full mt-4 flex justify-center items-center gap-2 bg-[#631c24] hover:bg-[#4d151c] text-white py-3.5 rounded-lg text-sm font-medium transition-colors shadow-md shadow-[#631c24]/20">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-          Entrar al Sistema
+        <button type="submit" [disabled]="cargando"
+                class="w-full bg-[#631c24] hover:bg-[#4d151c] text-white py-3.5 rounded-lg text-sm font-medium transition-colors shadow-md shadow-[#631c24]/20 cursor-pointer">
+          {{ cargando ? 'Verificando...' : 'Entrar al Sistema' }}
         </button>
       </form>
+
+      <!-- FORMULARIO REGISTRO DE CLIENTE -->
+      <form *ngIf="modo === 'registro'" (ngSubmit)="registrarCliente()" class="space-y-3.5 w-full max-w-md">
+        <div>
+          <h3 class="text-2xl font-serif text-gray-900 mb-1">Registro de Cliente</h3>
+          <p class="text-gray-500 text-xs">Compra muebles a medida y rastrea su fabricación en vivo</p>
+        </div>
+
+        <input type="text" name="regNombre" [(ngModel)]="registro.nombre" placeholder="Nombre completo *"
+               class="w-full px-4 py-2.5 bg-[#f8f5f4] rounded-lg text-sm text-gray-700 border border-transparent focus:border-[#631c24] focus:bg-white outline-none">
+
+        <input type="email" name="regEmail" [(ngModel)]="registro.email" placeholder="Correo electrónico *"
+               class="w-full px-4 py-2.5 bg-[#f8f5f4] rounded-lg text-sm text-gray-700 border border-transparent focus:border-[#631c24] focus:bg-white outline-none">
+
+        <input type="password" name="regPass" [(ngModel)]="registro.password" placeholder="Contraseña *"
+               class="w-full px-4 py-2.5 bg-[#f8f5f4] rounded-lg text-sm text-gray-700 border border-transparent focus:border-[#631c24] focus:bg-white outline-none">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input type="text" name="regTel" [(ngModel)]="registro.telefono" placeholder="Teléfono (opcional)"
+                 class="w-full px-4 py-2.5 bg-[#f8f5f4] rounded-lg text-sm text-gray-700 border border-transparent focus:border-[#631c24] focus:bg-white outline-none">
+          <input type="text" name="regDir" [(ngModel)]="registro.direccion" placeholder="Dirección de entrega"
+                 class="w-full px-4 py-2.5 bg-[#f8f5f4] rounded-lg text-sm text-gray-700 border border-transparent focus:border-[#631c24] focus:bg-white outline-none">
+        </div>
+
+        <button type="submit" [disabled]="cargando"
+                class="w-full bg-[#631c24] hover:bg-[#4d151c] text-white py-3 rounded-lg text-sm font-medium transition-colors shadow-md shadow-[#631c24]/20 cursor-pointer">
+          {{ cargando ? 'Creando cuenta...' : 'Registrarme y Ver Catálogo' }}
+        </button>
+      </form>
+
     </div>
   </div>
 
-  <!-- Footer general -->
   <div class="mt-8 text-[11px] text-gray-400">
-    &copy; 2024 Atelier. Sistema de Gestión Interna.
+    &copy; 2026 Atelier. Sistema de Gestión Interna y Comercio Digital.
   </div>
 </div>

@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SidebarComponent } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-resenas',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
-  templateUrl: './resenas.html',
-  styleUrl: './resenas.css'
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, SidebarComponent],
+  templateUrl: './resenas.html'
 })
 export class Resenas implements OnInit {
   private apiUrl = 'http://localhost:5000/api/resenas';
