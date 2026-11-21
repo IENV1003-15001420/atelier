@@ -1,0 +1,310 @@
+<div class="flex h-screen bg-[#fcfbfa] font-sans text-gray-800 overflow-hidden">
+
+  <!-- BARRA LATERAL (SIDEBAR) -->
+  <aside
+    [ngClass]="sidebarAbierta ? 'w-64' : 'w-20'"
+    class="bg-[#fcfbfa] border-r border-gray-200 py-6 flex flex-col transition-all duration-300 whitespace-nowrap overflow-y-auto">
+
+    <div class="px-6 pb-8 flex items-center gap-3" [ngClass]="sidebarAbierta ? 'justify-start' : 'justify-center'">
+      <img src="/logo_atelier.png" alt="Logo Atelier" class="w-8 h-8 object-contain">
+      <div *ngIf="sidebarAbierta">
+        <h2 class="text-[#6b1d24] font-serif text-2xl m-0 leading-none">Atelier</h2>
+        <span class="text-[10px] text-gray-500 tracking-widest">CARPINTERÍA DIGITAL</span>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VISIÓN GENERAL</span>
+      <a routerLink="/dashboard" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5" [routerLinkActiveOptions]="{exact: true}"
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📊</span>
+        <span *ngIf="sidebarAbierta">Panel de Control</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">VENTAS Y ATENCIÓN</span>
+      <a routerLink="/cotizaciones" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📝</span>
+        <span *ngIf="sidebarAbierta">Cotizaciones CRM</span>
+      </a>
+      <a routerLink="/ecommerce" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🛒</span>
+        <span *ngIf="sidebarAbierta">Tienda en Línea</span>
+      </a>
+      <a routerLink="/resenas" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">⭐</span>
+        <span *ngIf="sidebarAbierta">Reseñas y Encuestas</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">INVENTARIO Y LOGÍSTICA</span>
+      <a routerLink="/compras" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">📦</span>
+        <span *ngIf="sidebarAbierta">Compras Generales</span>
+      </a>
+      <a routerLink="/almacen" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🪵</span>
+        <span *ngIf="sidebarAbierta">Almacén e Inventarios</span>
+      </a>
+      <a routerLink="/logistica" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-2.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🚚</span>
+        <span *ngIf="sidebarAbierta">Logística e Instalaciones</span>
+      </a>
+    </div>
+
+    <div class="mb-6">
+      <span *ngIf="sidebarAbierta" class="text-[10px] text-gray-400 px-6 mb-2 block tracking-widest">ADMINISTRACIÓN</span>
+      <a routerLink="/usuarios" routerLinkActive="bg-[#6b1d24] text-white rounded-r-full mr-5"
+         class="flex items-center gap-4 px-6 py-3 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+        <span class="text-lg">🫂</span>
+        <span *ngIf="sidebarAbierta">Gestión de Usuarios</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 p-8 overflow-y-auto transition-all duration-300">
+
+    <!-- Encabezado superior -->
+    <header class="flex justify-between items-center mb-10">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()" class="text-gray-500 hover:text-[#6b1d24] transition-colors p-2 text-2xl focus:outline-none">☰</button>
+        <div class="bg-white px-4 py-2 rounded-full border border-gray-200 text-sm shadow-sm text-gray-600 flex items-center gap-2">
+          🏢 Taller Central - León, Gto. <span class="text-emerald-500 text-[10px]">●</span> Conexión Activa
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-right leading-tight">
+          <strong class="block text-sm text-gray-800">{{ usuarioLogueado?.nombre || 'Admin General' }}</strong>
+          <span class="text-[11px] text-gray-500">{{ usuarioLogueado?.nombre_rol || 'Administrador' }}</span>
+        </div>
+        <div class="w-10 h-10 bg-[#6b1d24] text-white rounded-full flex justify-center items-center font-bold text-sm shadow-md">
+          {{ inicialesUsuario }}
+        </div>
+        <a href="javascript:void(0)" (click)="cerrarSesion()" class="text-[#6b1d24] text-xs font-semibold hover:underline">Salir</a>
+      </div>
+    </header>
+
+    <!-- Título y Botón -->
+    <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+      <div>
+        <span class="uppercase tracking-widest text-[10px] text-gray-500">POSTVENTA • CALIDAD Y EXPERIENCIA DEL CLIENTE</span>
+        <h1 class="text-3xl text-[#6b1d24] font-serif mt-1">Reseñas y Encuestas de Satisfacción</h1>
+        <p class="text-sm text-gray-500 mt-1">
+          Evalúa la satisfacción por cada mueble entregado, da seguimiento a comentarios de clientes y mide la calidad del taller.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button (click)="exportarCSV()" class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 flex items-center gap-2 shadow-sm cursor-pointer">
+          <span>↓</span> Exportar CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Alerta -->
+    <div *ngIf="mensajeAlerta"
+         [ngClass]="tipoAlerta === 'exito' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'"
+         class="mb-6 px-4 py-3 rounded-xl border text-sm flex justify-between items-center">
+      <span>{{ mensajeAlerta }}</span>
+      <button (click)="mensajeAlerta = ''" class="text-xs font-semibold underline cursor-pointer">Cerrar</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-[#6b1d24] tracking-widest">CALIFICACIÓN PROMEDIO</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-[#6b1d24]">{{ resumen.promedio_calificacion }} ★</strong>
+          <p class="text-xs text-gray-500 mt-1">Sobre escala de 5.0 estrellas</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">RESEÑAS CAPTURADAS</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-gray-800">{{ resumen.total_resenas }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Encuestas completadas por clientes</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">PENDIENTES DE ENCUESTA</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-amber-600">{{ resumen.pendientes_evaluar }}</strong>
+          <p class="text-xs text-gray-500 mt-1">Muebles aún sin calificación</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-[10px] text-gray-400 tracking-widest">ÍNDICE DE SATISFACCIÓN</span>
+        <div class="mt-4">
+          <strong class="text-2xl text-emerald-700">{{ resumen.tasa_satisfaccion }}%</strong>
+          <p class="text-xs text-gray-500 mt-1">Clientes con 4 o 5 estrellas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button (click)="seleccionarFiltro('TODOS')"
+              [ngClass]="filtroTipo === 'TODOS' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full shadow-sm transition-colors cursor-pointer">
+        Todos ({{ contarPorFiltro('TODOS') }})
+      </button>
+      <button (click)="seleccionarFiltro('EVALUADAS')"
+              [ngClass]="filtroTipo === 'EVALUADAS' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Evaluadas ({{ contarPorFiltro('EVALUADAS') }})
+      </button>
+      <button (click)="seleccionarFiltro('PENDIENTES')"
+              [ngClass]="filtroTipo === 'PENDIENTES' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Pendientes ({{ contarPorFiltro('PENDIENTES') }})
+      </button>
+      <button (click)="seleccionarFiltro('POSITIVAS')"
+              [ngClass]="filtroTipo === 'POSITIVAS' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        4-5 Estrellas ({{ contarPorFiltro('POSITIVAS') }})
+      </button>
+      <button (click)="seleccionarFiltro('ATENCION')"
+              [ngClass]="filtroTipo === 'ATENCION' ? 'bg-[#6b1d24] text-white' : 'bg-[#f8f5f4] text-gray-600 hover:bg-gray-200'"
+              class="px-4 py-1.5 text-xs rounded-full transition-colors cursor-pointer">
+        Requieren Atención ({{ contarPorFiltro('ATENCION') }})
+      </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="mb-4">
+      <div class="relative w-full md:w-1/2">
+        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+        <input type="text" [(ngModel)]="textoBusqueda" (input)="aplicarFiltros()"
+               placeholder="Buscar por folio, cliente, mueble o comentario..."
+               class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#6b1d24] shadow-sm">
+      </div>
+    </div>
+
+    <!-- Tabla de Reseñas -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#fcfbfa] border-b border-gray-100 text-[10px] text-gray-500 uppercase tracking-widest">
+            <th class="p-4">Pedido & Mueble</th>
+            <th class="p-4">Cliente</th>
+            <th class="p-4">Estado Pedido</th>
+            <th class="p-4">Calificación</th>
+            <th class="p-4">Comentario del Cliente</th>
+            <th class="p-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50 text-sm">
+          <tr *ngFor="let item of resenasFiltradas" class="hover:bg-gray-50 transition-colors">
+            <td class="p-4">
+              <strong class="block text-gray-800">Pedido #{{ item.id_pedido }}</strong>
+              <span class="text-xs text-gray-600 block">{{ item.cantidad }}x {{ item.producto_nombre }}</span>
+              <span class="text-[10px] text-gray-400">{{ item.producto_categoria }} • Operario: {{ item.operario_nombre }}</span>
+            </td>
+            <td class="p-4">
+              <strong class="block text-gray-800">{{ item.cliente_nombre }}</strong>
+              <span class="text-[11px] text-gray-500">{{ item.cliente_email }}</span>
+            </td>
+            <td class="p-4">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                {{ item.estado_pedido }}
+              </span>
+            </td>
+            <td class="p-4">
+              <div *ngIf="item.calificacion_cliente" class="flex flex-col">
+                <div class="text-base leading-none">
+                  <span *ngFor="let s of estrellas"
+                        [ngClass]="s <= item.calificacion_cliente ? 'text-amber-500' : 'text-gray-300'">★</span>
+                </div>
+                <span class="text-[11px] text-gray-500 mt-1">
+                  {{ item.calificacion_cliente }}/5 — {{ etiquetaCalificacion(item.calificacion_cliente) }}
+                </span>
+              </div>
+              <span *ngIf="!item.calificacion_cliente"
+                    class="px-2.5 py-1 rounded-full text-[11px] bg-amber-50 text-amber-700 border border-amber-200">
+                Pendiente
+              </span>
+            </td>
+            <td class="p-4 max-w-xs">
+              <p *ngIf="item.comentario_resena" class="text-xs text-gray-700 leading-relaxed">
+                "{{ item.comentario_resena }}"
+              </p>
+              <span *ngIf="!item.comentario_resena" class="text-xs text-gray-400 italic">
+                Sin comentario registrado
+              </span>
+            </td>
+            <td class="p-4 text-right">
+              <div class="flex justify-end gap-2">
+                <button (click)="abrirModalEvaluar(item)"
+                        class="px-2.5 py-1 text-xs bg-[#6b1d24] text-white rounded-md hover:bg-[#5b191e] cursor-pointer">
+                  {{ item.calificacion_cliente ? 'Editar' : 'Calificar' }}
+                </button>
+                <button *ngIf="item.calificacion_cliente" (click)="eliminarResena(item)"
+                        class="px-2.5 py-1 text-xs bg-red-50 text-red-700 border border-red-200 rounded-md hover:bg-red-100 cursor-pointer">
+                  Borrar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="resenasFiltradas.length === 0" class="p-8 text-center text-sm text-gray-400">
+        No hay registros que coincidan con este filtro.
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: CAPTURAR / EDITAR RESEÑA -->
+  <div *ngIf="modalEvaluarAbierto && resenaEditando" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl border border-gray-100">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-serif text-[#6b1d24]">Encuesta de Satisfacción</h3>
+        <button (click)="modalEvaluarAbierto = false" class="text-gray-400 hover:text-gray-700 text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div class="bg-[#fcfbfa] p-3 rounded-lg border border-gray-100 text-xs space-y-1">
+          <p><strong>Pedido #{{ resenaEditando.id_pedido }}</strong> — {{ resenaEditando.cantidad }}x {{ resenaEditando.producto_nombre }}</p>
+          <p class="text-gray-500">Cliente: {{ resenaEditando.cliente_nombre }}</p>
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-500 mb-2">Calificación del Cliente *</label>
+          <div class="flex items-center gap-2">
+            <button type="button" *ngFor="let s of estrellas" (click)="seleccionarEstrella(s)"
+                    [ngClass]="s <= resenaEditando.calificacion_cliente ? 'text-amber-500 scale-110' : 'text-gray-300'"
+                    class="text-3xl transition-transform cursor-pointer focus:outline-none">
+              ★
+            </button>
+            <span class="ml-2 text-xs font-semibold text-gray-700">
+              {{ resenaEditando.calificacion_cliente }}/5 ({{ etiquetaCalificacion(resenaEditando.calificacion_cliente) }})
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Comentario / Retroalimentación</label>
+          <textarea rows="4" [(ngModel)]="resenaEditando.comentario_resena"
+                    placeholder="Ej. Excelente acabado en madera de parota, entrega puntual y los instaladores muy amables..."
+                    class="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-[#6b1d24]"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button (click)="modalEvaluarAbierto = false" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer">Cancelar</button>
+        <button (click)="guardarResena()" class="px-4 py-2 text-sm bg-[#6b1d24] text-white rounded-lg hover:bg-[#5b191e] cursor-pointer">
+          Guardar Reseña
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

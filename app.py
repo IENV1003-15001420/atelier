@@ -37,10 +37,11 @@ def detectar_db_config():
             'use_pure': True
         }]
     else:
-        candidatos = [
-            {'host': host, 'user': 'liz', 'password': os.getenv('ATELIER_DB_PASSWORD', 'root'), 'database': database, 'use_pure': True},
-            {'host': host, 'user': 'root', 'password': '', 'database': database, 'use_pure': True}
-        ]
+      candidatos = [
+    {'host': host, 'user': 'liz', 'password': os.getenv('ATELIER_DB_PASSWORD', 'root'), 'database': database, 'use_pure': True},
+    {'host': host, 'user': 'root', 'password': '', 'database': database, 'use_pure': True},
+    {'host': '127.0.0.1', 'port': 8889, 'user': 'root', 'password': 'root', 'database': database, 'use_pure': True}
+]
 
     for candidato in candidatos:
         try:
@@ -980,6 +981,8 @@ def registrar_resena(id_detalle):
         if cursor: cursor.close()
         if conn and conn.is_connected(): conn.close()
 
+from routes_carlos import crear_blueprint_carlos
+app.register_blueprint(crear_blueprint_carlos(conectar_db))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
